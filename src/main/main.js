@@ -4,19 +4,17 @@ const config = ({
     zoom: 7,
     fillOpacity: 0.6,
     colorScale: [
-        ['#ffffcc', '#78c679', '#006837'],
-        ['#ccffff', '#c67879', '#683700'],
-        ['#ffccff', '#7879c6', '#680037'],
-        ['#ffcccc', '#78c6c6', '#006800'],
-        ['#ccffcc', '#c6c679', '#000068'],
-        ['#ccccff', '#c679c6', '#680000'],
-        ['#cccccc', '#c6c6c6', '#376837'],
-        ['#ffffff', '#787979', '#000037'],
-        ['#ffff55', '#78aa79', '#376837'],
-        ['#ffff55', '#7879aa', '#686837']
+        ['#deebf7', '#9ecae1', '#3182bd'],
+        ['#e5f5e0', '#a1d99b', '#31a354'],
+        ['#f0f0f0', '#bdbdbd', '#636363'],
+        ['#fee6ce', '#fdae6b', '#e6550d'],
+        ['#efedf5', '#bcbddc', '#756bb1'],
+        ['#fee0d2', '#fc9272', '#de2d26']
     ]
 });
-const h3Resolution = 7;
+
+
+const h3Resolution = 8;
 let hexagons = [];
 
 const listanum = d3.range(16);
@@ -28,8 +26,9 @@ console.log(h3Index);
 
 
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
-const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona&geofilter.distance=41.390205%2C2.154007%2C10000"
-// const url = "'./data/listaMunicipios.json'"
+// const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona&geofilter.distance=41.390205%2C2.154007%2C10000"
+const url = './data/listaMunicipios10barcelona.json'
+// const url = './data/listaMunicipios.json'
 
 d3.json(url).then(function (data) {
     calculate(data);
@@ -96,7 +95,7 @@ function renderHexes(map, hexagons, colorscale) {
                 'fill-outline-color': 'rgba(0,0,0,0)',
             }
         });
-        source = map.getSource(sourceId);
+        // source = map.getSource(sourceId);
     } else {
         // Update the geojson data
         source.setData(geojson);
@@ -105,9 +104,9 @@ function renderHexes(map, hexagons, colorscale) {
     map.setPaintProperty(layerId, 'fill-color', {
         property: 'value',
         stops: [
-            [0, config.colorScale[colorscale % 10][0]],
-            [0.5, config.colorScale[colorscale % 10][1]],
-            [1, config.colorScale[colorscale % 10][2]]
+            [0, config.colorScale[colorscale % 6][0]],
+            [0.5, config.colorScale[colorscale % 6][1]],
+            [1, config.colorScale[colorscale % 6][2]]
         ]
     });
 
@@ -139,12 +138,11 @@ function renderAreas(map, hexagons, colorscale, threshold) {
             interactive: false,
             paint: {
                 'line-width': 3,
-                'line-color': config.colorScale[colorscale % 10][2],
+                'line-color': config.colorScale[colorscale % 6][2],
             }
         });
-        source = map.getSource(sourceId);
+        // source = map.getSource(sourceId);
     } else {
-
         // Update the geojson data
         source.setData(geojson);
     }
