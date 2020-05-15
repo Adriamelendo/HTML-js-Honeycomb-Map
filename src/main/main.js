@@ -1,4 +1,4 @@
-const config = ({    
+const config = ({
     lat: 41.390205,
     lng: 2.154007,
     zoom: 7,
@@ -13,9 +13,15 @@ const config = ({
     ]
 });
 
-
+// tamaño más pequeño h3Resolution = 10 (es bloque de edificios), quizas 9 por privacidad
+// min: 10
+// Mundo max: 2
+// España max: 3
+// Provincia max: 5
 const h3Resolution = 8;
+let maxpersonsinhex = 1;
 let hexagons = [];
+
 
 const listanum = d3.range(16);
 
@@ -34,10 +40,19 @@ d3.json(url).then(function (data) {
     calculate(data);
 });
 
+function getRandomIntInHex() {
+    const maxpersonsinhex10 = 3;
+    maxpersonsinhex = maxpersonsinhex10 * Math.pow(7, 10 - h3Resolution);
+    return getRandomInt(0, maxpersonsinhex);
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
 function calculate(listaMunicipios) {
-
-
-
     let municipios = []
     listanum.forEach(function (d) {
         municipios.push({ type: 'Feature', geometry: listaMunicipios.records[d].fields.geo_shape });
@@ -52,7 +67,7 @@ function calculate(listaMunicipios) {
 
     listanum.forEach(function (d) {
         // Reduce hexagon list to a map with random values
-        hexagons.push(listhexagons[d].reduce((res, hexagon) => ({ ...res, [hexagon]: Math.random() }), {}));
+        hexagons.push(listhexagons[d].reduce((res, hexagon) => ({ ...res, [hexagon]: getRandomIntInHex() }), {}));
     });
 
     // console.log(hexagons);
@@ -60,7 +75,7 @@ function calculate(listaMunicipios) {
 
 function rendermap() {
     listanum.forEach((d) => {
-        console.log(hexagons[d]);
+        // console.log(hexagons[d]);
         if (hexagons[d] != undefined) {
             renderHexes(map, hexagons[d], d);
             renderAreas(map, hexagons[d], d, 0);
@@ -82,6 +97,8 @@ function renderHexes(map, hexagons, colorscale) {
 
     // Add the source and layer if we haven't created them yet
     if (!source) {
+        console.log('adding source: ' + sourceId);
+        console.log(geojson);
         map.addSource(sourceId, {
             type: 'geojson',
             data: geojson
@@ -105,8 +122,8 @@ function renderHexes(map, hexagons, colorscale) {
         property: 'value',
         stops: [
             [0, config.colorScale[colorscale % 6][0]],
-            [0.5, config.colorScale[colorscale % 6][1]],
-            [1, config.colorScale[colorscale % 6][2]]
+            [Math.ceil(maxpersonsinhex/2), config.colorScale[colorscale % 6][1]],
+            [maxpersonsinhex, config.colorScale[colorscale % 6][2]]
         ]
     });
 
@@ -126,11 +143,11 @@ function renderAreas(map, hexagons, colorscale, threshold) {
     // Add the source and layer if we haven't created them yet
     if (!source) {
         console.log('adding source: ' + sourceId);
+        console.log(geojson);
         map.addSource(sourceId, {
             type: 'geojson',
             data: geojson
         });
-        console.log('adding layer: ' + layerId);
         map.addLayer({
             id: layerId,
             source: sourceId,

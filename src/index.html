@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Honeycomb Map</title>
+    <title>Honeycomb Map</title>    
     <script src="https://unpkg.com/h3-js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
@@ -30,6 +30,7 @@
 <body>
     <p>This is Honeycomb Map</p>
     <div id="mapview" style='height:400px;'></div>
+    <div id="info"></div>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoibnJhYmlub3dpdHoiLCJhIjoiY2s3bnl1NWw1MDM4YTNwcXdnaGx1bHc0dSJ9.fifgXUv2VNkykCIpALSrHA';
         var map = new mapboxgl.Map({
@@ -40,6 +41,11 @@
         });
         map.on('styledata', function () {
             rendermap();
+        });
+        map.on("mousemove", ({lngLat: {lng, lat}}) => {     
+            const centerHex = h3.geoToH3(lat, lng, h3Resolution);
+            const info = document.getElementById("info");
+            info.innerHTML = centerHex;
         });
     </script>
 </body>
