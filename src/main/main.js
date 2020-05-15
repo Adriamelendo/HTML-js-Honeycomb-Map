@@ -83,10 +83,6 @@ function onEachFeature(feature, layer) {
     });
 }
 
-
-
-
-
 function mouseover(lng, lat) {
     const centerHex = h3.geoToH3(lat, lng, h3Resolution);
     const info = document.getElementById("outinfo");
@@ -174,13 +170,21 @@ function getColor(d, ngroup) {
  *    / /\/\ \ (_| | | | | | /  _  \ | |  __/ (_| \__ \
  *    \/    \/\__,_|_|_| |_| \_/ \_/_|  \___|\__,_|___/
  */
+function incrementOpacity(){    
+    barcelona.setStyle({        
+        fillOpacity: 1
+    }); 
+}
+function resetOpacity() {
+    barcelona.resetStyle();
+}
 
 function stylefill(feature) {
     return {
         fill: true,
         fillColor: getColor(feature.properties.value, feature.properties.ngroup),
         stroke: false,
-        fillOpacity: 0.7
+        fillOpacity: 0.2
     };
 }
 
@@ -196,7 +200,11 @@ function renderHexes(map, hexagons, ngroup) {
     console.log(geojson);
 
     if (barcelona == '') {
-        barcelona = L.geoJson(geojson, { style: stylefill, onEachFeature: onEachFeature }).addTo(map);
+        barcelona = L.geoJson(geojson, { style: stylefill, onEachFeature: onEachFeature }).on({
+            mouseover: incrementOpacity,
+            mouseout: resetOpacity,
+            // click: zoomToFeature
+        }).addTo(map);
     } else {
         L.geoJson(geojson, { style: stylefill }).addTo(map);
     }
