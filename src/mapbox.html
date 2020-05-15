@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Honeycomb Map</title>
+    <script src="https://unpkg.com/h3-js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://bundle.run/geojson2h3@1.0.1"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+    <script src="./main/main.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #mapview {                      
+            width: 100%;
+            height: 600px;
+        }
+        #info {            
+            width: 100%;            
+        }
+    </style>
+</head>
+
+<body>
+    <p>This is Honeycomb Map</p>
+    <div id="mapview"></div>
+    <div id="info"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibnJhYmlub3dpdHoiLCJhIjoiY2s3bnl1NWw1MDM4YTNwcXdnaGx1bHc0dSJ9.fifgXUv2VNkykCIpALSrHA';
+        var map = new mapboxgl.Map({
+            container: 'mapview',
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [config.lng, config.lat],
+            zoom: config.zoom,
+        });
+        map.on('styledata', function () {
+            rendermap();
+        });
+        map.on("mousemove", ({ lngLat: { lng, lat } }) => {
+            mouseover(lng, lat);
+        });
+    </script>
+</body>
+
+</html>

@@ -3,25 +3,31 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Honeycomb Map</title>    
+    <title>Honeycomb Map</title>
     <script src="https://unpkg.com/h3-js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
     <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
     <script src="https://bundle.run/geojson2h3@1.0.1"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
     <script src="./main/main.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
     <style>
         body {
             margin: 0;
             padding: 0;
         }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
+        #mapview {
+            width: 100%;
+            height: 600px;
+        }
+
+        #info {
             width: 100%;
         }
     </style>
@@ -29,24 +35,59 @@
 
 <body>
     <p>This is Honeycomb Map</p>
-    <div id="mapview" style='height:400px;'></div>
+    <div id="mapview"></div>
     <div id="info"></div>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibnJhYmlub3dpdHoiLCJhIjoiY2s3bnl1NWw1MDM4YTNwcXdnaGx1bHc0dSJ9.fifgXUv2VNkykCIpALSrHA';
-        var map = new mapboxgl.Map({
-            container: 'mapview',
-            style: 'mapbox://styles/mapbox/light-v9',
-            center: [config.lng, config.lat],
-            zoom: config.zoom,
-        });
-        map.on('styledata', function () {
-            rendermap();
-        });
-        map.on("mousemove", ({lngLat: {lng, lat}}) => {     
-            const centerHex = h3.geoToH3(lat, lng, h3Resolution);
-            const info = document.getElementById("info");
-            info.innerHTML = centerHex;
-        });
+        const map = L.map('mapview').setView([config.lat, config.lng], config.zoom);
+        const tileSource = 'mapbox'
+        switch (tileSource) {
+            case 'openstreetmaps':
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                break;
+            case 'mapbox':
+                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/light-v9',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoibnJhYmlub3dpdHoiLCJhIjoiY2s3bnl1NWw1MDM4YTNwcXdnaGx1bHc0dSJ9.fifgXUv2VNkykCIpALSrHA'
+                }).addTo(map);
+                break;
+            case 'openmaptiles':
+                //https://openmaptiles.org/
+                // from your own server: https://openmaptiles.org/docs/website/leaflet/
+                break;
+        }
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(map);
+        }
+
+        map.on('click', onMapClick);
+
+
+        // L.marker([51.5, -0.09]).addTo(map)
+        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        //     .openPopup();
+        // var polygon = L.polygon([
+        //         [51.509, -0.08],
+        //         [51.503, -0.06],
+        //         [51.51, -0.047]
+        //     ]).addTo(mymap);
+        // polygon.bindPopup("I am a polygon.");
+        // map.on('styledata', function () {
+        //     rendermap();
+        // });
+        // map.on("mousemove", ({ lngLat: { lng, lat } }) => {
+        //     mouseover(lng, lat);
+        // });
     </script>
 </body>
 
