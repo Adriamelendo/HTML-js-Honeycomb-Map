@@ -17,14 +17,78 @@
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
     <style>
+        html,
         body {
+            height: 100%;
             margin: 0;
             padding: 0;
         }
 
+        .main-head {
+            grid-area: header;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .content {
+            grid-area: content;
+        }
+
+        .main-nav {
+            grid-area: nav;
+        }
+
+        .side {
+            grid-area: sidebar;
+        }
+
+        .ad {
+            grid-area: ad;
+        }
+
+        .main-footer {
+            grid-area: footer;
+        }
+
+        .wrapper {
+            height: 100%;
+            display: grid;
+            grid-gap: 2px;
+            grid-template-rows: 15px 40px auto 100px 20px 20px;
+            grid-template-areas:
+                "header"
+                "nav"
+                "content"
+                "sidebar"
+                "ad"
+                "footer";
+        }
+
+        nav ul {
+            margin: 2px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media only screen and (orientation: landscape) {
+            .wrapper {
+                grid-template-columns: 3fr 1fr;
+                grid-template-rows: 30px auto 30px;
+                grid-template-areas:
+                    "nav  header"
+                    "content sidebar"
+                    "footer  ad";
+            }
+
+            /*nav ul {
+                display: flex;
+                justify-content: space-between;
+            }*/
+        }
+
         #mapview {
             width: 100%;
-            height: 600px;
+            height: 100%;
         }
 
         #outinfo {
@@ -48,9 +112,20 @@
 </head>
 
 <body>
-    <p>This is Honeycomb Map</p>
-    <div id="mapview"></div>
-    <div id="outinfo"></div>
+    <div class="wrapper">
+        <header class="main-head">This is Honeycomb Map</header>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="">Nav 1</a></li>
+                <li><a href="">Nav 2</a></li>
+                <li><a href="">Nav 3</a></li>
+            </ul>
+        </nav>
+        <article class="content" id="mapview"></article>
+        <aside class="side" id="outinfo">Sidebar</aside>
+        <div class="ad">Advertising</div>
+        <footer class="main-footer">The footer</footer>
+    </div>
     <script>
         const map = L.map('mapview').setView([config.lat, config.lng], config.zoom);
         const tileSource = 'mapbox'
