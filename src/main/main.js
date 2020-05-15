@@ -1,3 +1,10 @@
+/*       ___ _       _           _                   _       _     _           
+ *      / _ \ | ___ | |__   __ _| | __   ____ _ _ __(_) __ _| |__ | | ___  ___ 
+ *     / /_\/ |/ _ \| '_ \ / _` | | \ \ / / _` | '__| |/ _` | '_ \| |/ _ \/ __|
+ *    / /_\\| | (_) | |_) | (_| | |  \ V / (_| | |  | | (_| | |_) | |  __/\__ \
+ *    \____/|_|\___/|_.__/ \__,_|_|   \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/                                                                             
+ */
+
 const config = ({
     lat: 41.390205,
     lng: 2.154007,
@@ -21,14 +28,15 @@ const config = ({
 const h3Resolution = 8;
 let maxpersonsinhex = 1;
 let hexagons = [];
-
-
+let barcelona = '';
 const listanum = d3.range(16);
-
-
-const h3Index = h3.geoToH3(37.3615593, -122.0553238, 7);
-console.log(h3Index);
-
+let info = '';
+/*       _                  ___                 _   _                 
+ *      /_\  _   ___  __   / __\   _ _ __   ___| |_(_) ___  _ __  ___ 
+ *     //_\\| | | \ \/ /  / _\| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+ *    /  _  \ |_| |>  <  / /  | |_| | | | | (__| |_| | (_) | | | \__ \
+ *    \_/ \_/\__,_/_/\_\ \/    \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+ */
 function getRandomIntInHex() {
     const maxpersonsinhex10 = 3;
     maxpersonsinhex = maxpersonsinhex10 * Math.pow(7, 10 - h3Resolution);
@@ -40,6 +48,57 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
+
+/*       __                 _       ___                 _   _                 
+ *      /__\_   _____ _ __ | |_    / __\   _ _ __   ___| |_(_) ___  _ __  ___ 
+ *     /_\ \ \ / / _ \ '_ \| __|  / _\| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+ *    //__  \ V /  __/ | | | |_  / /  | |_| | | | | (__| |_| | (_) | | | \__ \
+ *    \__/   \_/ \___|_| |_|\__| \/    \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+ */
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        fillColor: '#666',
+        fillOpacity: 1
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    info.update(layer.feature.properties);
+}
+function resetHighlight(e) {
+    barcelona.resetStyle(e.target);
+    info.update();
+}
+// function zoomToFeature(e) {
+//    map.fitBounds(e.target.getBounds());
+//}
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        // click: zoomToFeature
+    });
+}
+
+
+
+
+
+function mouseover(lng, lat) {
+    const centerHex = h3.geoToH3(lat, lng, h3Resolution);
+    const info = document.getElementById("outinfo");
+    info.innerHTML = centerHex;
+}
+
+/*                  _           ___                          _ 
+ *      /\/\   __ _(_)_ __     / _ \___ _ __   ___ _ __ __ _| |
+ *     /    \ / _` | | '_ \   / /_\/ _ \ '_ \ / _ \ '__/ _` | |
+ *    / /\/\ \ (_| | | | | | / /_\\  __/ | | |  __/ | | (_| | |
+ *    \/    \/\__,_|_|_| |_| \____/\___|_| |_|\___|_|  \__,_|_|
+ */
 
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
 // const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona&geofilter.distance=41.390205%2C2.154007%2C10000"
@@ -74,6 +133,9 @@ function calculate(listaMunicipios) {
 
 function rendermap() {
     console.log("rendermap");
+
+    addinfo();
+
     listanum.forEach((d) => {
         // console.log(hexagons[d]);
         if (hexagons[d] != undefined) {
@@ -82,32 +144,45 @@ function rendermap() {
         }
     })
 }
+function addinfo() {
+    info = L.control();
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
 
-function getColor(d,ngroup) {
-    return d > Math.ceil(maxpersonsinhex*2/3)   ? config.colorScale[ngroup % 6][2] :
-           d > Math.ceil(maxpersonsinhex*1/3)   ? config.colorScale[ngroup % 6][1] :
-                                                  config.colorScale[ngroup % 6][0];
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = '<h4>US Population Density</h4>' + (props ?
+            '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+            : 'Hover over a state');
+    };
+
+    info.addTo(map);
 }
 
+function getColor(d, ngroup) {
+    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 6][2] :
+        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 6][1] :
+            config.colorScale[ngroup % 6][0];
+}
+
+/*                  _           _                      
+ *      /\/\   __ _(_)_ __     /_\  _ __ ___  __ _ ___ 
+ *     /    \ / _` | | '_ \   //_\\| '__/ _ \/ _` / __|
+ *    / /\/\ \ (_| | | | | | /  _  \ | |  __/ (_| \__ \
+ *    \/    \/\__,_|_|_| |_| \_/ \_/_|  \___|\__,_|___/
+ */
 
 function stylefill(feature) {
     return {
         fill: true,
-        fillColor: getColor(feature.properties.value,feature.properties.ngroup),
+        fillColor: getColor(feature.properties.value, feature.properties.ngroup),
         stroke: false,
         fillOpacity: 0.7
     };
 }
-function stylecontour(feature) {
-    return {
-        stroke: true,
-        fill: false,
-        weight: 3,
-        opacity: 1,
-        color: getColor(maxpersonsinhex,2)
-    };
-}
-
 
 function renderHexes(map, hexagons, ngroup) {
 
@@ -120,46 +195,28 @@ function renderHexes(map, hexagons, ngroup) {
 
     console.log(geojson);
 
-    L.geoJson(geojson, {style: stylefill}).addTo(map);
-
-    /*const sourceId = 'h3-hexes-' + colorscale;
-    const layerId = sourceId + '-layer';
-    let source = map.getSource(sourceId);
-
-    // Add the source and layer if we haven't created them yet
-    if (!source) {
-        console.log('adding source: ' + sourceId);
-        console.log(geojson);
-        map.addSource(sourceId, {
-            type: 'geojson',
-            data: geojson
-        });
-        map.addLayer({
-            id: layerId,
-            source: sourceId,
-            type: 'fill',
-            interactive: false,
-            paint: {
-                'fill-outline-color': 'rgba(0,0,0,0)',
-            }
-        });
-        // source = map.getSource(sourceId);
+    if (barcelona == '') {
+        barcelona = L.geoJson(geojson, { style: stylefill, onEachFeature: onEachFeature }).addTo(map);
     } else {
-        // Update the geojson data
-        source.setData(geojson);
+        L.geoJson(geojson, { style: stylefill }).addTo(map);
     }
-    // Update the layer paint properties, using the current config values
-    map.setPaintProperty(layerId, 'fill-color', {
-        property: 'value',
-        stops: [
-            [0, config.colorScale[colorscale % 6][0]],
-            [Math.ceil(maxpersonsinhex / 2), config.colorScale[colorscale % 6][1]],
-            [maxpersonsinhex, config.colorScale[colorscale % 6][2]]
-        ]
-    });
+}
 
-    map.setPaintProperty(layerId, 'fill-opacity', config.fillOpacity);
-    */
+/*                  _           ___            _                             
+ *      /\/\   __ _(_)_ __     / __\___  _ __ | |_ ___  _ __ _ __   ___  ___ 
+ *     /    \ / _` | | '_ \   / /  / _ \| '_ \| __/ _ \| '__| '_ \ / _ \/ __|
+ *    / /\/\ \ (_| | | | | | / /__| (_) | | | | || (_) | |  | | | | (_) \__ \
+ *    \/    \/\__,_|_|_| |_| \____/\___/|_| |_|\__\___/|_|  |_| |_|\___/|___/
+ */
+
+function stylecontour(feature) {
+    return {
+        stroke: true,
+        fill: false,
+        weight: 3,
+        opacity: 1,
+        color: getColor(maxpersonsinhex, feature.properties.ngroup)
+    };
 }
 function renderAreas(map, hexagons, ngroup) {
 
@@ -169,40 +226,9 @@ function renderAreas(map, hexagons, ngroup) {
     const geojson = geojson2h3.h3SetToFeature(
         Object.keys(hexagons)
     );
+    geojson.properties.ngroup = ngroup;
 
-    L.geoJson(geojson, {style: stylecontour}).addTo(map);
-
-    /* const sourceId = 'h3-hex-areas-' + colorscale;
-    const layerId = sourceId + '-layer';
-    let source = map.getSource(sourceId);
-
-    // Add the source and layer if we haven't created them yet
-    if (!source) {
-        console.log('adding source: ' + sourceId);
-        console.log(geojson);
-        map.addSource(sourceId, {
-            type: 'geojson',
-            data: geojson
-        });
-        map.addLayer({
-            id: layerId,
-            source: sourceId,
-            type: 'line',
-            interactive: false,
-            paint: {
-                'line-width': 3,
-                'line-color': config.colorScale[colorscale % 6][2],
-            }
-        });
-        // source = map.getSource(sourceId);
-    } else {
-        // Update the geojson data
-        source.setData(geojson);
-    }
-    */
+    L.geoJson(geojson, { style: stylecontour }).addTo(map);
 }
-function mouseover(lng, lat) {
-    const centerHex = h3.geoToH3(lat, lng, h3Resolution);
-    const info = document.getElementById("info");
-    info.innerHTML = centerHex;
-}
+
+/* http://patorjk.com/software/taag/#p=display&c=c&f=Ogre&t=Global%20variables%0A */
