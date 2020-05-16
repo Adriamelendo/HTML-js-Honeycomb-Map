@@ -6,8 +6,8 @@
  */
 
 const config = ({
-    lat: 41.390205,
-    lng: 2.154007,
+    lat: 28.261146,
+    lng: -16.595508,
     zoom: 11,
     fillOpacity: 0.6,
     colorScale: [
@@ -27,9 +27,12 @@ const config = ({
 // Provincia max: 5
 const h3Resolution = 8;
 let maxpersonsinhex = 1;
+let nhits = 0;
+let contornos = {};
+let areas = {};
+
 let hexagons = [];
 let barcelona = '';
-const listanum = d3.range(16);
 let info = '';
 /*       _                  ___                 _   _                 
  *      /_\  _   ___  __   / __\   _ _ __   ___| |_(_) ___  _ __  ___ 
@@ -97,8 +100,8 @@ function mouseover(lng, lat) {
  */
 
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
-// const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona&geofilter.distance=41.390205%2C2.154007%2C10000"
-const url = './data/listaMunicipios10barcelona.json'
+const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&geofilter.distance=28.261146%2C-16.595508%2C20000"
+// const url = './data/listaMunicipios10barcelona.json'
 // const url = './data/listaMunicipios.json'
 
 d3.json(url).then(function (data) {
@@ -106,40 +109,66 @@ d3.json(url).then(function (data) {
 });
 
 function calculate(listaMunicipios) {
-    let municipios = []
-    listanum.forEach(function (d) {
-        municipios.push({ type: 'Feature', geometry: listaMunicipios.records[d].fields.geo_shape });
-    });
-
-
+    nhits = listaMunicipios.nhits;
+    let municipios = [];    
+    for (let d = 0; d < nhits; d++) {
+        municipios.push({
+            type: 'Feature',
+            recordid: listaMunicipios.records[d].recordid,
+            colorscale: (parseInt(listaMunicipios.records[d].recordid, 16) % 5 + 1),
+            municipio: listaMunicipios.records[d].fields.municipio,
+            provincia: listaMunicipios.records[d].fields.provincia,
+            communidad_autonoma: listaMunicipios.records[d].fields.communidad_autonoma,
+            pais: listaMunicipios.records[d].fields.pais,
+            geo_point_2d: listaMunicipios.records[d].fields.geo_point_2d,
+            geometry: listaMunicipios.records[d].fields.geo_shape,
+            dist: (listaMunicipios.records[d].fields.dist) ? listaMunicipios.records[d].fields.dist : 0
+        });
+    }
 
     let listhexagons = [];
-    listanum.forEach(function (d) {
+    for (let d = 0; d < nhits; d++) {
         listhexagons.push(geojson2h3.featureToH3Set(municipios[d], h3Resolution));
-    });
+    }
+    // if (listhexagons[d] == undefined) { ... }
 
-    listanum.forEach(function (d) {
+   
+    for (let d = 0; d < nhits; d++) {
+        contornos[municipios[d].recordid] = geojson2h3.h3SetToFeature(
+            listhexagons[d],
+            {
+                colorscale: municipios[d].colorscale,
+                municipio: municipios[d].municipio,
+                provincia: municipios[d].provincia,
+                communidad_autonoma: municipios[d].communidad_autonoma,
+                pais: municipios[d].pais,
+                geo_point_2d: municipios[d].geo_point_2d,
+                dist: municipios[d].dist
+            }
+        );        
+    }
+
+    for (let d = 0; d < nhits; d++) {
         // Reduce hexagon list to a map with random values
         hexagons.push(listhexagons[d].reduce((res, hexagon) => ({ ...res, [hexagon]: getRandomIntInHex() }), {}));
-    });
+    }
+    // if (hexagons[d] == undefined) { ... }    
+    
+    for (let d = 0; d < nhits; d++) {
+        areas[municipios[d].recordid] = geojson2h3.h3SetToFeatureCollection(
+            Object.keys(hexagons[d]),
+            hex => ({ value: hexagons[d][hex], colorscale: municipios[d].colorscale })
+        );
+    }
 
     // console.log(hexagons);
-    rendermap();
+    addinfo();    
+    for (let d = 0; d < nhits; d++) {
+        renderContorno(municipios[d].recordid);
+        renderArea(municipios[d].recordid);        
+    }  
 }
 
-function rendermap() {
-    console.log("rendermap");
-
-    addinfo();
-
-    listanum.forEach((d) => {
-        // console.log(hexagons[d]);
-        if (hexagons[d] != undefined) {
-            renderHexes(map, hexagons[d], d);
-            renderAreas(map, hexagons[d], d);
-        }
-    })
-}
 function addinfo() {
     info = L.control();
     info.onAdd = function (map) {
@@ -160,14 +189,53 @@ function addinfo() {
             props.value + ' people<br>4 city associations<br>1 national association'
             : 'Hover over map');
     };
-
     info.addTo(map);
 }
 
-function getColor(d, ngroup) {
-    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 5 + 1][2] :
-        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 5 + 1][1] :
-            config.colorScale[ngroup % 5 + 1][0];
+function getColor(d, colorscale) {
+    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[colorscale][2] :
+           d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[colorscale][1] :
+                                                    config.colorScale[colorscale][0];
+}
+//---------------------------------------------------------------------------------------------------------
+function entraMunicipio(e) {
+    console.log(e.layer.feature.properties.colorscale);
+    // contornos[id].map.setStyle({
+    //     color: config.colorScale[contornos[id].properties.colorscale]
+    // });
+}
+function saleMunicipio(e) {
+    // contornos[id].map.resetStyle();
+}
+
+function stylecontour(feature) {
+    // we can use feature.properties.colorscale
+    return {
+        stroke: true,
+        fill: false,
+        weight: 3,
+        opacity: 1,
+        color: '#636363'        
+    };
+}
+function renderContorno(id) {
+    contornos[id].map=L.geoJson(contornos[id], { style: stylecontour }).addTo(map);
+}
+function stylefill(feature) {
+    //getColor(feature.properties.value, feature.properties.colorscale),
+    return {
+        fill: true,
+        fillColor: getColor(feature.properties.value, feature.properties.colorscale),
+        stroke: false,
+        fillOpacity: 0.2
+    };
+}
+function renderArea(id) {
+    areas[id].map = L.geoJson(areas[id], { style: stylefill }).on({
+        mouseover: entraMunicipio,
+        mouseout: saleMunicipio,
+        // click: zoomToFeature
+    }).addTo(map);
 }
 
 /*                  _           _                      
@@ -176,7 +244,7 @@ function getColor(d, ngroup) {
  *    / /\/\ \ (_| | | | | | /  _  \ | |  __/ (_| \__ \
  *    \/    \/\__,_|_|_| |_| \_/ \_/_|  \___|\__,_|___/
  */
-function incrementOpacity() {
+/* function incrementOpacity() {
     barcelona.setStyle({
         fillOpacity: 1
     });
@@ -185,14 +253,14 @@ function resetOpacity() {
     barcelona.resetStyle();
 }
 
-function stylefill(feature) {
-    return {
-        fill: true,
-        fillColor: getColor(feature.properties.value, feature.properties.ngroup),
-        stroke: false,
-        fillOpacity: 0.2
-    };
-}
+// function stylefill(feature) {
+//     return {
+//         fill: true,
+//         fillColor: getColor(feature.properties.value, feature.properties.ngroup),
+//         stroke: false,
+//         fillOpacity: 0.2
+//     };
+// }
 
 function renderHexes(map, hexagons, ngroup) {
 
@@ -202,7 +270,7 @@ function renderHexes(map, hexagons, ngroup) {
         hex => ({ value: hexagons[hex], ngroup: ngroup })
     );
 
-
+    console.log('geojson');
     console.log(geojson);
 
     if (barcelona == '') {
@@ -214,7 +282,7 @@ function renderHexes(map, hexagons, ngroup) {
     } else {
         L.geoJson(geojson, { style: stylefill }).addTo(map);
     }
-}
+} */
 
 /*                  _           ___            _                             
  *      /\/\   __ _(_)_ __     / __\___  _ __ | |_ ___  _ __ _ __   ___  ___ 
@@ -223,7 +291,7 @@ function renderHexes(map, hexagons, ngroup) {
  *    \/    \/\__,_|_|_| |_| \____/\___/|_| |_|\__\___/|_|  |_| |_|\___/|___/
  */
 
-function stylecontour(feature) {
+/* function stylecontour(feature) {
     return {
         stroke: true,
         fill: false,
@@ -235,7 +303,7 @@ function stylecontour(feature) {
 }
 function renderAreas(map, hexagons, ngroup) {
 
-    console.log()
+    // console.log()
 
     // Transform the current hexagon map into a GeoJSON object
     const geojson = geojson2h3.h3SetToFeature(
@@ -243,7 +311,9 @@ function renderAreas(map, hexagons, ngroup) {
     );
     geojson.properties.ngroup = ngroup;
 
+    // console.log(geojson);
+
     L.geoJson(geojson, { style: stylecontour }).addTo(map);
 }
-
-/* http://patorjk.com/software/taag/#p=display&c=c&f=Ogre&t=Global%20variables%0A */
+*/
+/* http://patorjk.com/software/taag/#p=display&c=c&f=Ogre&t=Global%20variables%0A */ 
