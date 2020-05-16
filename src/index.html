@@ -54,7 +54,7 @@
             height: 100%;
             display: grid;
             grid-gap: 2px;
-            grid-template-rows: 15px 40px auto 100px 20px 20px;
+            grid-template-rows: 15px 30px auto 100px 20px 20px;
             grid-template-areas:
                 "header"
                 "nav"
@@ -66,24 +66,34 @@
 
         nav ul {
             margin: 2px;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        aside ul {
+            margin: 2px;
+            padding: 0;
+            list-style-type: none;
             display: flex;
             justify-content: space-between;
         }
 
         @media only screen and (orientation: landscape) {
             .wrapper {
-                grid-template-columns: 3fr 1fr;
+                grid-template-columns: 250px auto 250px;
                 grid-template-rows: 30px auto 30px;
                 grid-template-areas:
-                    "nav  header"
-                    "content sidebar"
-                    "footer  ad";
+                    "header  nav     nav"
+                    "content content sidebar"
+                    "footer  footer  ad";
             }
 
-            /*nav ul {
-                display: flex;
+            aside ul {
+                display: block;
                 justify-content: space-between;
-            }*/
+            }
         }
 
         #mapview {
@@ -122,7 +132,13 @@
             </ul>
         </nav>
         <article class="content" id="mapview"></article>
-        <aside class="side" id="outinfo">Sidebar</aside>
+        <aside class="side" id="outinfo">
+            <ul>
+                <li>Sidebar 1</li>
+                <li>Sidebar 2</li>
+                <li>Sidebar 3</li>
+            </ul>
+        </aside>
         <div class="ad">Advertising</div>
         <footer class="main-footer">The footer</footer>
     </div>

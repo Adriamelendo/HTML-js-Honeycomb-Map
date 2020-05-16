@@ -11,9 +11,9 @@ const config = ({
     zoom: 11,
     fillOpacity: 0.6,
     colorScale: [
-        ['#deebf7', '#9ecae1', '#3182bd'],
-        ['#e5f5e0', '#a1d99b', '#31a354'],
         ['#f0f0f0', '#bdbdbd', '#636363'],
+        ['#deebf7', '#9ecae1', '#3182bd'],
+        ['#e5f5e0', '#a1d99b', '#31a354'],        
         ['#fee6ce', '#fdae6b', '#e6550d'],
         ['#efedf5', '#bcbddc', '#756bb1'],
         ['#fee0d2', '#fc9272', '#de2d26']
@@ -38,7 +38,7 @@ let info = '';
  *    \_/ \_/\__,_/_/\_\ \/    \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
  */
 function getRandomIntInHex() {
-    const maxpersonsinhex10 = 3;
+    const maxpersonsinhex10 = 2;
     maxpersonsinhex = maxpersonsinhex10 * Math.pow(7, 10 - h3Resolution);
     return getRandomInt(0, maxpersonsinhex);
 }
@@ -150,18 +150,18 @@ function addinfo() {
 
     // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
-        this._div.innerHTML = '<h4>US Population Density</h4>' + (props ?
-            '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-            : 'Hover over a state');
+        this._div.innerHTML = '<h4>Information</h4>' + (props ?
+            props.value + ' people<br>4 city associations<br>1 national association'
+            : 'Hover over map');
     };
 
     info.addTo(map);
 }
 
 function getColor(d, ngroup) {
-    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 6][2] :
-        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 6][1] :
-            config.colorScale[ngroup % 6][0];
+    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 5+1][2] :
+        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 5+1][1] :
+            config.colorScale[ngroup % 5 +1][0];
 }
 
 /*                  _           _                      
@@ -223,7 +223,8 @@ function stylecontour(feature) {
         fill: false,
         weight: 3,
         opacity: 1,
-        color: getColor(maxpersonsinhex, feature.properties.ngroup)
+        color: '#636363'
+        //color: getColor(maxpersonsinhex, feature.properties.ngroup)
     };
 }
 function renderAreas(map, hexagons, ngroup) {
