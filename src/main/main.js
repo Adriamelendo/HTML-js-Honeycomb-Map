@@ -13,7 +13,7 @@ const config = ({
     colorScale: [
         ['#f0f0f0', '#bdbdbd', '#636363'],
         ['#deebf7', '#9ecae1', '#3182bd'],
-        ['#e5f5e0', '#a1d99b', '#31a354'],        
+        ['#e5f5e0', '#a1d99b', '#31a354'],
         ['#fee6ce', '#fdae6b', '#e6550d'],
         ['#efedf5', '#bcbddc', '#756bb1'],
         ['#fee0d2', '#fc9272', '#de2d26']
@@ -85,7 +85,7 @@ function onEachFeature(feature, layer) {
 
 function mouseover(lng, lat) {
     const centerHex = h3.geoToH3(lat, lng, h3Resolution);
-    const info = document.getElementById("outinfo");
+    const info = document.getElementById("sidebar3");
     info.innerHTML = centerHex;
 }
 
@@ -144,6 +144,9 @@ function addinfo() {
     info = L.control();
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this._side1 = document.getElementById("sidebar1");
+        this._side2 = document.getElementById("sidebar2");
+        this._side3 = document.getElementById("sidebar3");
         this.update();
         return this._div;
     };
@@ -153,15 +156,18 @@ function addinfo() {
         this._div.innerHTML = '<h4>Information</h4>' + (props ?
             props.value + ' people<br>4 city associations<br>1 national association'
             : 'Hover over map');
+        this._side3.innerHTML = '<h4>Information</h4>' + (props ?
+            props.value + ' people<br>4 city associations<br>1 national association'
+            : 'Hover over map');
     };
 
     info.addTo(map);
 }
 
 function getColor(d, ngroup) {
-    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 5+1][2] :
-        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 5+1][1] :
-            config.colorScale[ngroup % 5 +1][0];
+    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[ngroup % 5 + 1][2] :
+        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[ngroup % 5 + 1][1] :
+            config.colorScale[ngroup % 5 + 1][0];
 }
 
 /*                  _           _                      
@@ -170,10 +176,10 @@ function getColor(d, ngroup) {
  *    / /\/\ \ (_| | | | | | /  _  \ | |  __/ (_| \__ \
  *    \/    \/\__,_|_|_| |_| \_/ \_/_|  \___|\__,_|___/
  */
-function incrementOpacity(){    
-    barcelona.setStyle({        
+function incrementOpacity() {
+    barcelona.setStyle({
         fillOpacity: 1
-    }); 
+    });
 }
 function resetOpacity() {
     barcelona.resetStyle();
