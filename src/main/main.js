@@ -210,7 +210,7 @@ function calculate(listaMunicipios) {
     for (let d = 0; d < nhits; d++) {
         areas[municipios[d].recordid] = geojson2h3.h3SetToFeatureCollection(
             Object.keys(hexagons[d]),
-            hex => ({ value: hexagons[d][hex], colorscale: municipios[d].colorscale })
+            hex => ({ value: hexagons[d][hex], colorscale: municipios[d].colorscale, municipioid: municipios[d].recordid })
         );
     }
 
@@ -256,14 +256,44 @@ function getColor(d, colorscale) {
                                                     config.colorScale[colorscale][0];
 }
 //---------------------------------------------------------------------------------------------------------
+/*  Asi se ilumina toda el area 
 function entraMunicipio(e) {
-    console.log(e.layer.feature.properties.colorscale);
+    console.log(e.layer.feature.properties.municipioid);
+    // test zoom out
+    areas[e.layer.feature.properties.municipioid ].map.setStyle({
+         fillOpacity: 1
+    });
     // contornos[id].map.setStyle({
     //     color: config.colorScale[contornos[id].properties.colorscale]
     // });
 }
 function saleMunicipio(e) {
-    // contornos[id].map.resetStyle();
+    areas[e.layer.feature.properties.municipioid].map.resetStyle();
+}
+ */
+function entraMunicipio(e) {
+    console.log(e.layer.feature.properties.municipioid);
+    // test zoom out
+    e.layer.setStyle({
+        stroke: true,        
+        weight: 5,
+        opacity: 1,
+        color: '#ff0000',
+        fillOpacity: 1
+    });
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        e.target.bringToFront();
+    }
+
+    const info = document.getElementById("sidebar");
+    info.innerHTML = '<img src="./data/side_provincia.png">';
+
+    // contornos[id].map.setStyle({
+    //     color: config.colorScale[contornos[id].properties.colorscale]
+    // });
+}
+function saleMunicipio(e) {    
+    areas[e.layer.feature.properties.municipioid].map.resetStyle(e.layer);    
 }
 
 function stylecontour(feature) {
@@ -277,6 +307,8 @@ function stylecontour(feature) {
     };
 }
 function renderContorno(id) {
+    console.log('renderContorno');
+    console.log(id);
     contornos[id].map=L.geoJson(contornos[id], { style: stylecontour }).addTo(map);
 }
 function stylefill(feature) {
