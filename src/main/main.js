@@ -25,7 +25,7 @@ const config = ({
 // Mundo max: 2
 // España max: 3
 // Provincia max: 5
-const h3Resolution = 6;
+const h3Resolution = 7;
 let maxpersonsinhex = 1;
 let nhits = 0;
 let contornos = {};
@@ -35,9 +35,7 @@ let hexagons = [];
 let barcelona = '';
 let info = '';
 // --------------- contenido para la DEMO ---------------------------------
-// con bujeros const allHexCanarias = ["863441587ffffff", "86344c517ffffff", "863441657ffffff", "86344159fffffff", "863443267ffffff", "863443247ffffff", "86344165fffffff", "863441677ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344025fffffff", "86344cd1fffffff", "86346a69fffffff", "86344cd27ffffff", "86346a68fffffff", "863441357ffffff", "86344cd07ffffff", "86344e9a7ffffff", "86344164fffffff", "86344e937ffffff", "86344166fffffff", "86344c537ffffff", "86344122fffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86346a6d7ffffff", "86346a6f7ffffff", "86346a6e7ffffff", "86344130fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441247ffffff", "86344124fffffff", "863441647ffffff", "863441667ffffff", "86344cd37ffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "863441377ffffff", "863443257ffffff", "8634432e7ffffff", "86344325fffffff", "86344cd97ffffff", "86344cd9fffffff", "863441497ffffff", "8634402c7ffffff", "8634402dfffffff", "8634402cfffffff", "8634402efffffff", "863441227ffffff", "86344131fffffff", "863443967ffffff", "863443947ffffff", "86344cd17ffffff", "86344cda7ffffff", "86344396fffffff", "8634414b7ffffff", "863441597ffffff", "8634415b7ffffff", "86344cdafffffff", "86344149fffffff", "86344126fffffff", "863441487ffffff", "8634414a7ffffff", "86344394fffffff", "863441277ffffff"]
-// centro tenerife const allHexCanarias = ["86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "86344cd97ffffff", "86344cd9fffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344126fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441277ffffff", "863441267ffffff", "86344135fffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "863441377ffffff", "86344cdafffffff", "863441247ffffff", "86344124fffffff", "86344cda7ffffff", "863441357ffffff", "86344122fffffff", "86344c537ffffff", "86344cd1fffffff", "86344c517ffffff"]
-const allHexCanarias = ["86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "86344cd97ffffff", "86344cd9fffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344126fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441277ffffff", "863441267ffffff", "86344135fffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "863441377ffffff", "86344cdafffffff", "863441247ffffff", "86344124fffffff", "86344cda7ffffff", "863441357ffffff", "86344122fffffff", "86344c537ffffff", "86344cd1fffffff", "86344c517ffffff", "86344cd07ffffff", "86344cd17ffffff", "86344cd37ffffff", "86344cd27ffffff", "86346a68fffffff", "86346a6f7ffffff", "86344130fffffff", "863441227ffffff", "86346a6d7ffffff", "86346a6e7ffffff", "86346a69fffffff", "86344131fffffff"]
+const allHexCanarias = ["87344cd9affffff","87344cd9bffffff","87344cd99ffffff","87344cd9dffffff","873441369ffffff","87344ccb4ffffff","87344ccb5ffffff","87344cca6ffffff","87344cd8affffff","87344cd8effffff","87344cd83ffffff","87344cd82ffffff","87344136bffffff","87344ccb6ffffff","87344ccb0ffffff","87344ccb1ffffff","87344cca2ffffff","87344cd88ffffff","87344cd8cffffff","87344cd81ffffff","87344cd80ffffff","87344cd86ffffff","87344134cffffff","87344134dffffff","87344ccb2ffffff","87344ccb3ffffff","87344cdaaffffff","87344cd85ffffff","87344cd84ffffff","873441348ffffff","873441349ffffff","87344cc94ffffff","87344cdaeffffff","87344cda3ffffff","87344134bffffff","87344cc96ffffff","87344cc90ffffff","87344cd91ffffff","87344cd90ffffff","87344cd93ffffff","87344cd9effffff","87344cd9cffffff","87344cd95ffffff","87344cd94ffffff","87344cd96ffffff","87344cd98ffffff","87344cdb3ffffff","87344cd92ffffff","87344136dffffff","873441361ffffff","87344136cffffff","873441365ffffff","873441364ffffff","87344ccabffffff","87344ccaaffffff","87344cc8cffffff","87344cc8dffffff","87344ccf6ffffff","87344cca9ffffff","87344cca8ffffff","87344ccaeffffff","87344cc85ffffff","87344cc81ffffff","87344cc8effffff","87344cc88ffffff","87344cc89ffffff","87344ccf2ffffff","87344ccf0ffffff","87344ccf4ffffff","87344cc1affffff","87344ccadffffff","87344ccacffffff","87344cca1ffffff","87344cca3ffffff","87344cc84ffffff","87344cc80ffffff","87344ccd4ffffff","87344ccf3ffffff","87344ccf1ffffff","87344ccf5ffffff","87344cc1bffffff","87344cca0ffffff","87344cc86ffffff","87344ccd5ffffff","873441345ffffff","873441344ffffff","873441340ffffff","873441341ffffff","87344136affffff","87344136effffff","873441363ffffff","873441362ffffff","873441371ffffff","873441346ffffff","873441343ffffff","87344134effffff","873441368ffffff","873441360ffffff","873441366ffffff","873441375ffffff","87344cc13ffffff","87344cc12ffffff","87344cc1effffff","87344cc11ffffff","87344cc10ffffff","87344cca5ffffff","87344cc18ffffff","87344cc1cffffff","87344cca4ffffff","87344126dffffff","873441268ffffff","873441269ffffff","87344cc9affffff","87344cc9effffff","87344cc93ffffff","87344126bffffff","87344c534ffffff","87344cc91ffffff","87344cc33ffffff","87344cc32ffffff","87344cc14ffffff","87344cc15ffffff","87344cc06ffffff","87344cc31ffffff","87344cc30ffffff","87344cc36ffffff","87344cd8dffffff","87344cd89ffffff","87344cc16ffffff","87344cc02ffffff","87344cc00ffffff","87344cc04ffffff","87344cc22ffffff","87344cc35ffffff","87344cd8bffffff","873441275ffffff","873441274ffffff","873441270ffffff","873441271ffffff","873441262ffffff","873441266ffffff","87344135bffffff","87344135affffff","873441229ffffff","873441276ffffff","873441272ffffff","873441273ffffff","873441246ffffff","873441244ffffff","873441260ffffff","873441264ffffff","873441359ffffff","873441358ffffff","87344122bffffff","87344120dffffff","873441255ffffff","873441265ffffff","87344134affffff","87344135dffffff","87344cdb1ffffff","87344cda2ffffff","87344c524ffffff","87344cc99ffffff","87344c526ffffff","87344c520ffffff","87344c525ffffff","87344cc8bffffff","87344cc8affffff","87344cc9dffffff","87344cc98ffffff","87344cc9bffffff","87344c522ffffff","87344c523ffffff","87344c521ffffff","87344ccd2ffffff","87344ccd6ffffff","87344cc83ffffff","87344cc9cffffff","87344c504ffffff","87344c505ffffff","87344c52effffff","87344c52cffffff","87344ccd3ffffff","87344ccd0ffffff","87344cc82ffffff","87344c500ffffff","87344c52affffff","87344c528ffffff","87344cc95ffffff","873441355ffffff","873441342ffffff","873441373ffffff","873441370ffffff","87344130dffffff","87344cda9ffffff","87344cc34ffffff","87344cda8ffffff","87344cdabffffff","87344cc26ffffff","873441241ffffff","873441240ffffff","873441243ffffff","87344124effffff","87344124cffffff","87344126affffff","873441245ffffff","873441242ffffff","87344125dffffff","87344124affffff","873441248ffffff","87344126effffff","873441263ffffff","87344126cffffff","873441261ffffff","87344cc92ffffff","87344cda1ffffff","87344cda0ffffff","87344cdacffffff","873441354ffffff","873441309ffffff","873441356ffffff","873441350ffffff","873441372ffffff","873441351ffffff","87344135effffff","873441353ffffff","87344122dffffff","87344135cffffff","873441352ffffff","87344122cffffff","873441228ffffff","87344122effffff","87344122affffff","87344c531ffffff","87344c530ffffff","87344c506ffffff","87344c535ffffff","87344c502ffffff","87344cd18ffffff","87344cd1effffff","87344cd1affffff","87344cd1bffffff","87344cd19ffffff","87344cd1dffffff","87344cd1cffffff","87344cd11ffffff","87344cdadffffff","87344c516ffffff","87344124bffffff","87344c512ffffff","87344c510ffffff","87344c514ffffff","873441249ffffff","87344c5acffffff","87344c513ffffff","87344c511ffffff","87344c515ffffff","87344c533ffffff","87344c532ffffff","87344124dffffff","87344c51cffffff","87344c536ffffff"]
 function styleallHexCanarias(feature) {
     // we can use feature.properties.colorscale
     return {
@@ -81,7 +79,8 @@ function getRandomInt(min, max) {
  *    //__  \ V /  __/ | | | |_  / /  | |_| | | | | (__| |_| | (_) | | | \__ \
  *    \__/   \_/ \___|_| |_|\__| \/    \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
  */
-function highlightFeature(e) {
+function entraHexagono(e) {
+    console.log('entraHexagono');
     var layer = e.target;
 
     layer.setStyle({
@@ -92,19 +91,20 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
-    info.update(layer.feature.properties);
+    // info.update(layer.feature.properties);
 }
-function resetHighlight(e) {
-    barcelona.resetStyle(e.target);
-    info.update();
+function saleHexagono(e) {
+    console.log('saleHexagono');
+    // barcelona.resetStyle(e.target);
+    // info.update();
 }
 // function zoomToFeature(e) {
 //    map.fitBounds(e.target.getBounds());
 //}
 function onEachFeature(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
+        mouseover: entraHexagono,
+        mouseout: saleHexagono,
         // click: zoomToFeature
     });
 }
@@ -140,7 +140,7 @@ d3.json(url).then(function (data) {
 
 function calculate(listaMunicipios) {
     nhits = listaMunicipios.nhits;
-    nhits = 1;
+    //ToSmall nhits = 1;
     let municipios = [];    
     for (let d = 0; d < nhits; d++) {
         municipios.push({
@@ -172,18 +172,28 @@ function calculate(listaMunicipios) {
            listhexagons.push(unique);
        }
     // if (listhexagons[d] == undefined) { ... }
-    //let juntado = [];
-    //for (let d = 0; d < nhits; d++) {
-    //    juntado = juntado.concat(listhexagons[d]);
-    //}
-    //console.log(juntado);
+    let juntado = [];
+    for (let d = 0; d < nhits; d++) {
+        juntado = juntado.concat(listhexagons[d]);
+    }
+    console.log(juntado);
+//download:
+var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(juntado));
+var dlAnchorElem = document.getElementById('sidebar');
+var link = document.createElement("a");
+link.setAttribute("href", dataStr);
+link.setAttribute("download", "juntado.json");
+dlAnchorElem.appendChild(link);
 
+//end
 
     // test ring
     //    const centerHex = h3.geoToH3(config.lat, config.lng, h3Resolution);
     //    listhexagons[0] = h3.kRing(centerHex, 9);
     // end test
-    listhexagons[0] = allHexCanarias;
+
+    //ToSmall
+    // listhexagons[0] = allHexCanarias;
 
    
     for (let d = 0; d < nhits; d++) {
@@ -217,7 +227,7 @@ function calculate(listaMunicipios) {
     // console.log(hexagons);
     addinfo();    
     for (let d = 0; d < nhits; d++) {
-        // renderContorno(municipios[d].recordid);
+        renderContorno(municipios[d].recordid);
         renderArea(municipios[d].recordid);        
     } 
     
@@ -272,8 +282,9 @@ function saleMunicipio(e) {
 }
  */
 function entraMunicipio(e) {
-    console.log(e.layer.feature.properties.municipioid);
-    // test zoom out
+    console.log('entraMunicipio');
+    // console.log(e.layer.feature.properties.municipioid);
+    /* // test zoom out
     e.layer.setStyle({
         stroke: true,        
         weight: 5,
@@ -283,16 +294,27 @@ function entraMunicipio(e) {
     });
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         e.target.bringToFront();
-    }
+    } */
 
     const info = document.getElementById("sidebar");
-    info.innerHTML = '<img src="./data/side_provincia.png">';
+    info.innerHTML = '<img src="./data/side_municipio.png">';
 
-    // contornos[id].map.setStyle({
-    //     color: config.colorScale[contornos[id].properties.colorscale]
-    // });
+    // console.log( 'area: '+
+    // h3.hexArea(h3Resolution, 'km2') + 'km2, edge: '+    
+    // h3.edgeLength(h3Resolution, 'km') + 'km'
+    // );
+
+    contornos[e.layer.feature.properties.municipioid].map.setStyle({
+        //color: config.colorScale[contornos[e.layer.feature.properties.municipioid].properties.colorscale]
+        color: '#00ff00'
+    });
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        contornos[e.layer.feature.properties.municipioid].map.bringToFront();
+    }
 }
-function saleMunicipio(e) {    
+function saleMunicipio(e) {   
+    console.log('saleMunicipio'); 
+    contornos[e.layer.feature.properties.municipioid].map.resetStyle();
     areas[e.layer.feature.properties.municipioid].map.resetStyle(e.layer);    
 }
 
@@ -322,7 +344,7 @@ function stylefill(feature) {
     };
 }
 function renderArea(id) {
-    areas[id].map = L.geoJson(areas[id], { style: stylefill }).on({
+    areas[id].map = L.geoJson(areas[id], { style: stylefill, onEachFeature: onEachFeature }).on({
         mouseover: entraMunicipio,
         mouseout: saleMunicipio,
         // click: zoomToFeature
