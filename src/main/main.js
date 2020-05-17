@@ -84,7 +84,10 @@ function entraHexagono(e) {
     var layer = e.target;
 
     layer.setStyle({
-        fillColor: '#666',
+        stroke: true,        
+        weight: 5,
+        opacity: 1,
+        color: '#ff0000',
         fillOpacity: 1
     });
 
@@ -304,9 +307,13 @@ function entraMunicipio(e) {
     // h3.edgeLength(h3Resolution, 'km') + 'km'
     // );
 
+    console.log(areas[e.layer.feature.properties.municipioid]);
     contornos[e.layer.feature.properties.municipioid].map.setStyle({
-        //color: config.colorScale[contornos[e.layer.feature.properties.municipioid].properties.colorscale]
-        color: '#00ff00'
+        stroke: true,        
+        weight: 5,
+        opacity: 1,
+        // color: config.colorScale[contornos[e.layer.feature.properties.municipioid].properties.colorscale]
+        color: '#e6550d'
     });
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         contornos[e.layer.feature.properties.municipioid].map.bringToFront();
