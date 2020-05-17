@@ -35,7 +35,27 @@ let hexagons = [];
 let barcelona = '';
 let info = '';
 // --------------- contenido para la DEMO ---------------------------------
-const allHexCanarias = ["863441587ffffff", "86344c517ffffff", "863441657ffffff", "86344159fffffff", "863443267ffffff", "863443247ffffff", "86344165fffffff", "863441677ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344025fffffff", "86344cd1fffffff", "86346a69fffffff", "86344cd27ffffff", "86346a68fffffff", "863441357ffffff", "86344cd07ffffff", "86344e9a7ffffff", "86344164fffffff", "86344e937ffffff", "86344166fffffff", "86344c537ffffff", "86344122fffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86346a6d7ffffff", "86346a6f7ffffff", "86346a6e7ffffff", "86344130fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441247ffffff", "86344124fffffff", "863441647ffffff", "863441667ffffff", "86344cd37ffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "863441377ffffff", "863443257ffffff", "8634432e7ffffff", "86344325fffffff", "86344cd97ffffff", "86344cd9fffffff", "863441497ffffff", "8634402c7ffffff", "8634402dfffffff", "8634402cfffffff", "8634402efffffff", "863441227ffffff", "86344131fffffff", "863443967ffffff", "863443947ffffff", "86344cd17ffffff", "86344cda7ffffff", "86344396fffffff", "8634414b7ffffff", "863441597ffffff", "8634415b7ffffff", "86344cdafffffff", "86344149fffffff", "86344126fffffff", "863441487ffffff", "8634414a7ffffff", "86344394fffffff", "863441277ffffff"]
+// con bujeros const allHexCanarias = ["863441587ffffff", "86344c517ffffff", "863441657ffffff", "86344159fffffff", "863443267ffffff", "863443247ffffff", "86344165fffffff", "863441677ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344025fffffff", "86344cd1fffffff", "86346a69fffffff", "86344cd27ffffff", "86346a68fffffff", "863441357ffffff", "86344cd07ffffff", "86344e9a7ffffff", "86344164fffffff", "86344e937ffffff", "86344166fffffff", "86344c537ffffff", "86344122fffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86346a6d7ffffff", "86346a6f7ffffff", "86346a6e7ffffff", "86344130fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441247ffffff", "86344124fffffff", "863441647ffffff", "863441667ffffff", "86344cd37ffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "863441377ffffff", "863443257ffffff", "8634432e7ffffff", "86344325fffffff", "86344cd97ffffff", "86344cd9fffffff", "863441497ffffff", "8634402c7ffffff", "8634402dfffffff", "8634402cfffffff", "8634402efffffff", "863441227ffffff", "86344131fffffff", "863443967ffffff", "863443947ffffff", "86344cd17ffffff", "86344cda7ffffff", "86344396fffffff", "8634414b7ffffff", "863441597ffffff", "8634415b7ffffff", "86344cdafffffff", "86344149fffffff", "86344126fffffff", "863441487ffffff", "8634414a7ffffff", "86344394fffffff", "863441277ffffff"]
+// centro tenerife const allHexCanarias = ["86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "86344cd97ffffff", "86344cd9fffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344126fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441277ffffff", "863441267ffffff", "86344135fffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "863441377ffffff", "86344cdafffffff", "863441247ffffff", "86344124fffffff", "86344cda7ffffff", "863441357ffffff", "86344122fffffff", "86344c537ffffff", "86344cd1fffffff", "86344c517ffffff"]
+const allHexCanarias = ["86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "86344cd97ffffff", "86344cd9fffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344126fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441277ffffff", "863441267ffffff", "86344135fffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "863441377ffffff", "86344cdafffffff", "863441247ffffff", "86344124fffffff", "86344cda7ffffff", "863441357ffffff", "86344122fffffff", "86344c537ffffff", "86344cd1fffffff", "86344c517ffffff", "86344cd07ffffff", "86344cd17ffffff", "86344cd37ffffff", "86344cd27ffffff", "86346a68fffffff", "86346a6f7ffffff", "86344130fffffff", "863441227ffffff", "86346a6d7ffffff", "86346a6e7ffffff", "86346a69fffffff", "86344131fffffff"]
+function styleallHexCanarias(feature) {
+    // we can use feature.properties.colorscale
+    return {
+        stroke: true,
+        fill: false,
+        weight: 5,
+        opacity: 1,
+        color: '#0000ff'        
+    };
+}
+
+function onMapClick(e) {
+    allHexCanarias.push(h3.geoToH3(e.latlng.lat, e.latlng.lng, h3Resolution)); 
+    console.log(allHexCanarias);   
+}
+
+
+
 
 /*       _                  ___                 _   _                 
  *      /_\  _   ___  __   / __\   _ _ __   ___| |_(_) ___  _ __  ___ 
@@ -103,12 +123,16 @@ function mouseover(lng, lat) {
  */
 
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
-// Este va
-// const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&geofilter.distance=28.261146%2C-16.595508%2C20000"
+
+// Este va centro tenerife
+const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&geofilter.distance=28.261146%2C-16.595508%2C20000"
+
+// const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=53&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.communidad_autonoma=Islas+Canarias&refine.provincia=Santa+Cruz+de+Tenerife&geofilter.distance=28.261146%2C-16.595508%2C10000"
+
 
 // const url = './data/listaMunicipios10barcelona.json'
 // const url = './data/listaMunicipios.json'
-const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=53&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.communidad_autonoma=Islas+Canarias&refine.provincia=Santa+Cruz+de+Tenerife"
+// const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=53&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.communidad_autonoma=Islas+Canarias&refine.provincia=Santa+Cruz+de+Tenerife"
 
 d3.json(url).then(function (data) {
     calculate(data);
@@ -116,6 +140,7 @@ d3.json(url).then(function (data) {
 
 function calculate(listaMunicipios) {
     nhits = listaMunicipios.nhits;
+    nhits = 1;
     let municipios = [];    
     for (let d = 0; d < nhits; d++) {
         municipios.push({
@@ -147,11 +172,18 @@ function calculate(listaMunicipios) {
            listhexagons.push(unique);
        }
     // if (listhexagons[d] == undefined) { ... }
-    let juntado = [];
-    for (let d = 0; d < nhits; d++) {
-        juntado = juntado.concat(listhexagons[d]);
-    }
-    console.log(juntado);
+    //let juntado = [];
+    //for (let d = 0; d < nhits; d++) {
+    //    juntado = juntado.concat(listhexagons[d]);
+    //}
+    //console.log(juntado);
+
+
+    // test ring
+    //    const centerHex = h3.geoToH3(config.lat, config.lng, h3Resolution);
+    //    listhexagons[0] = h3.kRing(centerHex, 9);
+    // end test
+    listhexagons[0] = allHexCanarias;
 
    
     for (let d = 0; d < nhits; d++) {
@@ -185,12 +217,14 @@ function calculate(listaMunicipios) {
     // console.log(hexagons);
     addinfo();    
     for (let d = 0; d < nhits; d++) {
-        renderContorno(municipios[d].recordid);
+        // renderContorno(municipios[d].recordid);
         renderArea(municipios[d].recordid);        
     } 
     
-    
-    
+        
+    L.geoJson(geojson2h3.h3SetToFeature(allHexCanarias), { style: styleallHexCanarias }).addTo(map);
+
+    map.on('click', onMapClick);
 }
 
 function addinfo() {
@@ -251,7 +285,8 @@ function stylefill(feature) {
         fill: true,
         fillColor: getColor(feature.properties.value, feature.properties.colorscale),
         stroke: false,
-        fillOpacity: 0.2
+        // fillOpacity: 0.2
+        fillOpacity: 0.6
     };
 }
 function renderArea(id) {

@@ -4,8 +4,8 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Honeycomb Map</title>
-    <!--<script src="https://unpkg.com/h3-js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script> -->
+    <script src="https://unpkg.com/h3-js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
     <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
     <script src="https://bundle.run/geojson2h3@1.0.1"></script>
@@ -168,14 +168,7 @@
         }
         var popup = L.popup();
 
-        function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("You clicked the map at " + e.latlng.toString())
-                .openOn(map);
-        }
-
-        map.on('click', onMapClick);
+        
 
 
         // L.marker([51.5, -0.09]).addTo(map)
