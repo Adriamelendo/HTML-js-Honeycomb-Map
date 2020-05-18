@@ -1,3 +1,18 @@
+var speed = 'slow';
+
+$(document).ready(function() {
+    $('html, body').fadeIn(speed, function() {
+        $('a[href], button[href]').click(function(event) {
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0 || url.indexOf('javascript:') == 0) return;
+            event.preventDefault();
+            $('html, body').fadeOut(speed, function() {
+                window.location = url;
+            });
+        });
+    });
+});
+
 /*       ___ _       _           _                   _       _     _           
  *      / _ \ | ___ | |__   __ _| | __   ____ _ _ __(_) __ _| |__ | | ___  ___ 
  *     / /_\/ |/ _ \| '_ \ / _` | | \ \ / / _` | '__| |/ _` | '_ \| |/ _ \/ __|
@@ -84,10 +99,11 @@ function entraHexagono(e) {
     var layer = e.target;
 
     layer.setStyle({
-        stroke: true,        
-        weight: 5,
-        opacity: 1,
-        color: '#ff0000',
+        //stroke: true,        
+        //weight: 5,
+        //opacity: 1,
+        //color: '#ff0000',
+        fillColor: '#ff0000',
         fillOpacity: 1
     });
 
@@ -128,7 +144,8 @@ function mouseover(lng, lat) {
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
 
 // Este va centro tenerife
-const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&geofilter.distance=28.261146%2C-16.595508%2C20000"
+//const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=313&facet=communidad_autonoma&facet=provincia&facet=municipio&geofilter.distance=28.261146%2C-16.595508%2C20000"
+const url = './data/presentacion_cerca.json'
 
 // const url = "https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&rows=53&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.communidad_autonoma=Islas+Canarias&refine.provincia=Santa+Cruz+de+Tenerife&geofilter.distance=28.261146%2C-16.595508%2C10000"
 
@@ -146,10 +163,12 @@ function calculate(listaMunicipios) {
     //ToSmall nhits = 1;
     let municipios = [];    
     for (let d = 0; d < nhits; d++) {
+        let color= 1;
+        if(listaMunicipios.records[d].fields.municipio == "La Orotava") color =3;
         municipios.push({
             type: 'Feature',
             recordid: listaMunicipios.records[d].recordid,
-            colorscale: (parseInt(listaMunicipios.records[d].recordid, 16) % 5 + 1),
+            colorscale: color,// ((parseInt(listaMunicipios.records[d].recordid, 16)+3) % 5 + 1),
             municipio: listaMunicipios.records[d].fields.municipio,
             provincia: listaMunicipios.records[d].fields.provincia,
             communidad_autonoma: listaMunicipios.records[d].fields.communidad_autonoma,
@@ -175,11 +194,11 @@ function calculate(listaMunicipios) {
            listhexagons.push(unique);
        }
     // if (listhexagons[d] == undefined) { ... }
-    let juntado = [];
+    /* let juntado = [];
     for (let d = 0; d < nhits; d++) {
         juntado = juntado.concat(listhexagons[d]);
     }
-    console.log(juntado);
+    console.log(juntado); 
 //download:
 var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(juntado));
 var dlAnchorElem = document.getElementById('sidebar');
@@ -187,7 +206,7 @@ var link = document.createElement("a");
 link.setAttribute("href", dataStr);
 link.setAttribute("download", "juntado.json");
 dlAnchorElem.appendChild(link);
-
+*/
 //end
 
     // test ring
@@ -298,9 +317,12 @@ function entraMunicipio(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         e.target.bringToFront();
     } */
+    /* areas[e.layer.feature.properties.municipioid].map.setStyle({
+        fillColor: getColor(areas[e.layer.feature.properties.municipioid].features[0].properties.value, 3)
+    })  */   
 
     const info = document.getElementById("sidebar");
-    info.innerHTML = '<img src="./data/side_municipio.png">';
+    info.innerHTML = '<img src="./data/side_mun2.png">';
 
     // console.log( 'area: '+
     // h3.hexArea(h3Resolution, 'km2') + 'km2, edge: '+    
