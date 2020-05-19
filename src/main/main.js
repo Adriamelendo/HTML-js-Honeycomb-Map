@@ -130,7 +130,7 @@ function onEachFeature(feature, layer) {
 
 function mouseover(lng, lat) {
     const centerHex = h3.geoToH3(lat, lng, h3Resolution);
-    const info = document.getElementById("sidebar3");
+    // const info = document.getElementById("sidebar3");
     info.innerHTML = centerHex;
 }
 
@@ -247,7 +247,7 @@ dlAnchorElem.appendChild(link);
     }
 
     // console.log(hexagons);
-    addinfo();    
+    // addinfo();    
     for (let d = 0; d < nhits; d++) {
         renderContorno(municipios[d].recordid);
         renderArea(municipios[d].recordid);        
@@ -259,13 +259,13 @@ dlAnchorElem.appendChild(link);
     map.on('click', onMapClick);
 }
 
-function addinfo() {
+/* function addinfo() {
     info = L.control();
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-        this._side1 = document.getElementById("sidebar1");
-        this._side2 = document.getElementById("sidebar2");
-        this._side3 = document.getElementById("sidebar3");
+        //this._side1 = document.getElementById("sidebar1");
+        //this._side2 = document.getElementById("sidebar2");
+        //this._side3 = document.getElementById("sidebar3");
         this.update();
         return this._div;
     };
@@ -280,7 +280,7 @@ function addinfo() {
             : 'Hover over map');
     };
     info.addTo(map);
-}
+} */
 
 function getColor(d, colorscale) {
     return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[colorscale][2] :

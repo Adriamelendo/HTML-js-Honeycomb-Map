@@ -26,6 +26,7 @@
         }
 
         .main-head {
+            align-items: center;
             grid-area: header;
             font-weight: bold;
             font-size: larger;
@@ -37,10 +38,13 @@
 
         .main-nav {
             grid-area: nav;
+            padding: 0px;
         }
 
         .side {
             grid-area: sidebar;
+            font-size: small;
+            font-family: monospace;
         }
 
         .ad {
@@ -55,11 +59,11 @@
             height: 100%;
             display: grid;
             grid-gap: 2px;
-            grid-template-rows: 15px 30px auto 100px 20px 20px;
+            grid-template-rows: 100px auto 47px 100px 20px 20px;
             grid-template-areas:
                 "header"
-                "nav"
                 "content"
+                "nav"
                 "sidebar"
                 "ad"
                 "footer";
@@ -67,10 +71,35 @@
 
         nav ul {
             margin: 2px;
-            padding: 0;
+            padding: 0px;
             list-style-type: none;
             display: flex;
-            justify-content: space-between;
+            justify-content: center
+        }
+
+        nav a {
+            text-decoration: none;
+            border-color: #000000;
+            color: #000000;
+
+            display: inline-block;
+            margin-left: 0.5em;
+                margin-right: 0.5em;
+                margin-top: 0;
+                margin-bottom: 0; 
+            padding: 0.7em 1.1em;
+            outline: none;
+            border: 3px solid rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.5);
+            text-decoration: none;
+            font-weight: 700;
+            opacity: 1;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            background-color: #3182bd;
         }
 
         aside ul {
@@ -83,8 +112,8 @@
 
         @media only screen and (orientation: landscape) {
             .wrapper {
-                grid-template-columns: 250px auto 322px;
-                grid-template-rows: 30px auto 3px;
+                grid-template-columns: 473px auto 322px;
+                grid-template-rows: 100px auto 3px;
                 grid-template-areas:
                     "header  nav     nav"
                     "content content sidebar"
@@ -94,6 +123,20 @@
             aside ul {
                 display: block;
                 justify-content: space-between;
+            }
+
+            .main-nav {
+                padding: 10px;
+            }
+
+            nav ul {
+                padding: 10px;
+            }
+            nav a{
+                margin-left: 0.5em;
+                margin-right: 0.5em;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;                
             }
         }
 
@@ -124,21 +167,34 @@
 
 <body>
     <div class="wrapper">
-        <header class="main-head">This is Honeycomb Map</header>
+        <header class="main-head"><a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">
+                <img src="./data/header.png" height="100px" alt="Honeycomb Map"></a></header>
         <nav class="main-nav">
             <ul>
-                <li><a href="./provincia.html">Nav 1</a></li>
-                <li><a href="">Nav 2</a></li>
-                <li><a href="">Nav 3</a></li>
+                <li><a href="./provincia.html">Mapa desde lejos</a></li>
+                <li><a href="./index.html">Mapa desde cerca</a></li>
+                <li><a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Info del Proyecto</a>
+                </li>
             </ul>
         </nav>
         <article class="content" id="mapview"></article>
-        <aside class="side"id="sidebar">
-            <ul>
-                <li id="sidebar1">Sidebar 1</li>
-                <li id="sidebar2">Sidebar 2</li>
-                <li id="sidebar3">Sidebar 3</li>
-            </ul>
+        <aside class="side" id="sidebar">
+            <p><b>Honeycomb Map:</b> Una nueva forma de mostrar datos en un mapa. Es una librería que usa una estructura
+                de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser utilizada
+                en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable.</p>
+
+            <p>Este tipo de visualización permite romper la brecha digital, haciendo accesible los datos a cualquier
+                persona, ya que obtenemos información más clara de un solo vistazo. El usuario es capaz de obtener tanto
+                la información puntual geolocalizada, como de una región más grande. Por ejemplo, conocer la farmacia
+                más cercana (un punto), como el teléfono de atención médica de mi provincia.</p>
+
+            <p>Algunas de sus características son:<br>
+                * Posibilidad de visualizar información multi-escala de forma simultánea.<br>
+                * Limitando el tamaño de los hexágonos podemos ajustar la privacidad, la ubicación exacta nunca es
+                mostrada.<br>
+                * Normalmente para mostrar los datos asociados a una región usamos un punto en el centro de la misma,
+                con HoneyComb Map ya no hace falta.<br>
+                * Al dividir las regiones en hexágonos, las distancias y áreas se ven fácil y claramente.</p>
         </aside>
         <div class="ad"></div>
         <footer class="main-footer"></footer>
@@ -149,12 +205,12 @@
         switch (tileSource) {
             case 'openstreetmaps':
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution: '&copy; <a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Honeycomb Map</a>'
                 }).addTo(map);
                 break;
             case 'mapbox':
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    attribution: '&copy; <a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Honeycomb Map</a>',
                     maxZoom: 18,
                     id: 'mapbox/light-v9',
                     tileSize: 512,
@@ -169,7 +225,7 @@
         }
         var popup = L.popup();
 
-        
+
 
 
         // L.marker([51.5, -0.09]).addTo(map)
