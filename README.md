@@ -1,5 +1,5 @@
 # Honeycomb-Map
-Una nueva forma de mostrar datos en un mapa. Es una librería que usa una estructura de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser utilizada en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable.
+Una nueva forma de mostrar datos en un mapa. Es una librería que usa una estructura de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser utilizada en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable. [Pequeña demo interactiva semi-funcional](https://adriamelendo.github.io/Honeycomb-Map/src/index.html "Demo of Honeycomb Map")
 
 ![alt text](https://adriamelendo.github.io/Honeycomb-Map/src/data/World_hexagons.png "HexMap")
 
