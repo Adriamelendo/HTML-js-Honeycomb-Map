@@ -49,6 +49,8 @@ let hexagons = [];
 let barcelona = '';
 let info = '';
 let previous_content = '';
+let previousHexagonoClick = '';
+let previousMunicipioClick = '';
 // --------------- contenido para la DEMO ---------------------------------
 // con bujeros const allHexCanarias = ["863441587ffffff", "86344c517ffffff", "863441657ffffff", "86344159fffffff", "863443267ffffff", "863443247ffffff", "86344165fffffff", "863441677ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344025fffffff", "86344cd1fffffff", "86346a69fffffff", "86344cd27ffffff", "86346a68fffffff", "863441357ffffff", "86344cd07ffffff", "86344e9a7ffffff", "86344164fffffff", "86344e937ffffff", "86344166fffffff", "86344c537ffffff", "86344122fffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86346a6d7ffffff", "86346a6f7ffffff", "86346a6e7ffffff", "86344130fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441247ffffff", "86344124fffffff", "863441647ffffff", "863441667ffffff", "86344cd37ffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "863441377ffffff", "863443257ffffff", "8634432e7ffffff", "86344325fffffff", "86344cd97ffffff", "86344cd9fffffff", "863441497ffffff", "8634402c7ffffff", "8634402dfffffff", "8634402cfffffff", "8634402efffffff", "863441227ffffff", "86344131fffffff", "863443967ffffff", "863443947ffffff", "86344cd17ffffff", "86344cda7ffffff", "86344396fffffff", "8634414b7ffffff", "863441597ffffff", "8634415b7ffffff", "86344cdafffffff", "86344149fffffff", "86344126fffffff", "863441487ffffff", "8634414a7ffffff", "86344394fffffff", "863441277ffffff"]
 // centro tenerife const allHexCanarias = ["86344ccb7ffffff", "86344cd8fffffff", "86344cd87ffffff", "86344134fffffff", "86344cc97ffffff", "86344cd97ffffff", "86344cd9fffffff", "86344ccafffffff", "86344cca7ffffff", "86344cc87ffffff", "86344cc8fffffff", "86344ccf7ffffff", "863441347ffffff", "86344136fffffff", "863441367ffffff", "86344cc17ffffff", "86344cc1fffffff", "86344126fffffff", "86344cc07ffffff", "86344cc37ffffff", "863441277ffffff", "863441267ffffff", "86344135fffffff", "86344c527ffffff", "86344cc9fffffff", "86344c507ffffff", "86344c52fffffff", "86344ccd7ffffff", "863441377ffffff", "86344cdafffffff", "863441247ffffff", "86344124fffffff", "86344cda7ffffff", "863441357ffffff", "86344122fffffff", "86344c537ffffff", "86344cd1fffffff", "86344c517ffffff"]
@@ -65,8 +67,8 @@ function styleallHexCanarias(feature) {
 }
 
 function onMapClick(e) {
-    allHexCanarias.push(h3.geoToH3(e.latlng.lat, e.latlng.lng, h3Resolution)); 
-    console.log(allHexCanarias);   
+    // allHexCanarias.push(h3.geoToH3(e.latlng.lat, e.latlng.lng, h3Resolution)); 
+    // console.log(allHexCanarias);   
 }
 
 
@@ -288,6 +290,15 @@ function saleMunicipio(e) {
     areas[e.layer.feature.properties.municipioid].map.resetStyle();
 }
  */
+function entraMunicipioSave(e) {
+    
+    if (previousMunicipioClick != '') {
+        saleMunicipio(previousMunicipioClick);
+    }
+    previousMunicipioClick = e;
+    entraMunicipio(e);
+}
+
 function entraMunicipio(e) {
     console.log(e.layer.feature.properties.municipioid);
     // test zoom out
@@ -353,7 +364,7 @@ function renderArea(id) {
     areas[id].map = L.geoJson(areas[id], { style: stylefill }).on({
         mouseover: entraMunicipio,
         mouseout: saleMunicipio,
-        // click: zoomToFeature
+        click: entraMunicipioSave
     }).addTo(map);
 }
 

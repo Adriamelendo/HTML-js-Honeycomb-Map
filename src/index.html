@@ -59,14 +59,13 @@
             height: 100%;
             display: grid;
             grid-gap: 2px;
-            grid-template-rows: 100px auto 47px 100px 20px 20px;
+            grid-template-rows: 100px auto 250px 20px;
+            grid-template-columns: 473px auto;
             grid-template-areas:
-                "header"
-                "content"
-                "nav"
-                "sidebar"
-                "ad"
-                "footer";
+                "header  nav"
+                "content content"             
+                "sidebar sidebar"                
+                "footer ad";
         }
 
         nav ul {
@@ -85,8 +84,8 @@
             display: inline-block;
             margin-left: 0.5em;
                 margin-right: 0.5em;
-                margin-top: 0;
-                margin-bottom: 0; 
+                margin-top: 0.5em;
+                margin-bottom: 0.5em; 
             padding: 0.7em 1.1em;
             outline: none;
             border: 3px solid rgba(0, 0, 0, 0.5);
@@ -223,7 +222,7 @@
                 // from your own server: https://openmaptiles.org/docs/website/leaflet/
                 break;
         }
-        var popup = L.popup();
+        // var popup = L.popup();
 
 
 
