@@ -300,7 +300,7 @@ function entraMunicipioSave(e) {
 }
 
 function entraMunicipio(e) {
-    console.log(e.layer.feature.properties.municipioid);
+    // console.log(e.layer.feature.properties.municipioid);
     // test zoom out
     e.layer.setStyle({
         stroke: true,        
@@ -317,10 +317,10 @@ function entraMunicipio(e) {
     previous_content = info.innerHTML;
     info.innerHTML = '<img src="./data/side_provincia.png">';
 
-    console.log( 'area: '+
+   /*  console.log( 'area: '+
     h3.hexArea(h3Resolution, 'km2') + 'km2, edge: '+    
     h3.edgeLength(h3Resolution, 'km') + 'km'
-    );
+    ); */
 //size 6 -> area: 36.1290521km2, edge: 3.229482772km
 //size 8 -> 
 //size 8 -> 

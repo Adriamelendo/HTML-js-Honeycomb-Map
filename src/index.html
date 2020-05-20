@@ -43,8 +43,6 @@
 
         .side {
             grid-area: sidebar;
-            font-size: small;
-            font-family: monospace;
         }
 
         .ad {
@@ -63,8 +61,8 @@
             grid-template-columns: 473px auto;
             grid-template-areas:
                 "header  nav"
-                "content content"             
-                "sidebar sidebar"                
+                "content content"
+                "sidebar sidebar"
                 "footer ad";
         }
 
@@ -83,9 +81,9 @@
 
             display: inline-block;
             margin-left: 0.5em;
-                margin-right: 0.5em;
-                margin-top: 0.5em;
-                margin-bottom: 0.5em; 
+            margin-right: 0.5em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
             padding: 0.7em 1.1em;
             outline: none;
             border: 3px solid rgba(0, 0, 0, 0.5);
@@ -131,11 +129,12 @@
             nav ul {
                 padding: 10px;
             }
-            nav a{
+
+            nav a {
                 margin-left: 0.5em;
                 margin-right: 0.5em;
                 margin-top: 0.5em;
-                margin-bottom: 0.5em;                
+                margin-bottom: 0.5em;
             }
         }
 
@@ -161,6 +160,154 @@
             margin: 0 0 5px;
             color: #777;
         }
+
+
+        div.blueTable {
+            border: 1px solid #1C6EA4;
+            background-color: #EEEEEE;
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .divTable.blueTable .divTableCell,
+        .divTable.blueTable .divTableHead {
+            /* border: 1px solid #AAAAAA;*/
+            padding: 3px 2px;
+        }
+
+        .divTable.blueTable .divTableBody .divTableCell {
+            font-weight: 700;
+        }
+
+        .divTable.blueTable .divTableRow:nth-child(even) {
+            background: #D0E4F5;
+        }
+
+        .divTable.blueTable .divTableHeading {
+            background: #1C6EA4;
+            border-bottom: 2px solid #444444;
+        }
+
+        .divTable.blueTable .divTableHeading .divTableHead {
+            font-size: xx-large;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-align: center;
+            border-left: 2px solid #D0E4F5;
+        }
+
+        .divTable.blueTable .divTableHeading .divTableHead:first-child {
+            border-left: none;
+        }
+
+        .blueTable .tableFootStyle {
+            font-size: 14px;
+        }
+
+        .blueTable .tableFootStyle .links {
+            text-align: right;
+        }
+
+        .blueTable .tableFootStyle .links a {
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .blueTable.outerTableFooter {
+            border-top: none;
+        }
+
+        .blueTable.outerTableFooter .tableFootStyle {
+            padding: 3px 5px;
+        }
+
+        /* DivTable.com */
+        .divTable {
+            display: table;
+        }
+
+        .divTableRow {
+            display: table-row;
+        }
+
+        .divTableHeading {
+            display: table-header-group;
+        }
+
+        .divTableCell,
+        .divTableHead {
+            display: table-cell;
+        }
+
+        .divTableHeading {
+            display: table-header-group;
+        }
+
+        .divTableFoot {
+            display: table-footer-group;
+        }
+
+        .divTableBody {
+            display: table-row-group;
+        }
+
+
+        .provincia {
+            grid-area: provincia;
+            background: #0000ff !important;
+        }
+
+        .contprovincia {
+            grid-area: contprovincia;
+        }
+
+        .municipio {
+            grid-area: municipio;
+            background: #e6550d !important;
+        }
+
+        .contmunicipio {
+            grid-area: contmunicipio;
+        }
+
+        .hexagono {
+            grid-area: hexagono;
+            background: #3182bd !important;
+        }
+
+        .conthexagono {
+            grid-area: conthexagono;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            grid-template-areas:
+                "provincia     municipio     hexagono"
+                "contprovincia contmunicipio conthexagono"
+        }
+
+
+
+        @media only screen and (orientation: landscape) {
+            .container {
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto auto auto auto auto auto;
+                grid-template-areas:
+                    "provincia"
+                    "contprovincia"
+                    "municipio"
+                    "contmunicipio"
+                    "hexagono"
+                    "conthexagono"
+            }
+        }
     </style>
 </head>
 
@@ -178,24 +325,71 @@
         </nav>
         <article class="content" id="mapview"></article>
         <aside class="side" id="sidebar">
-            <p><b>Honeycomb Map:</b> Una nueva forma de mostrar datos en un mapa. Es una librería que usa una estructura
-                de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser utilizada
-                en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable.</p>
-
-            <p>Este tipo de visualización permite romper la brecha digital, haciendo accesible los datos a cualquier
-                persona, ya que obtenemos información más clara de un solo vistazo. El usuario es capaz de obtener tanto
-                la información puntual geolocalizada, como de una región más grande. Por ejemplo, conocer la farmacia
-                más cercana (un punto), como el teléfono de atención médica de mi provincia.</p>
-
-            <p>Algunas de sus características son:<br>
-                * Posibilidad de visualizar información multi-escala de forma simultánea.<br>
-                * Limitando el tamaño de los hexágonos podemos ajustar la privacidad, la ubicación exacta nunca es
-                mostrada.<br>
-                * Normalmente para mostrar los datos asociados a una región usamos un punto en el centro de la misma,
-                con HoneyComb Map ya no hace falta.<br>
-                * Al dividir las regiones en hexágonos, las distancias y áreas se ven fácil y claramente.</p>
+            <div class="divTable blueTable">
+                <span class="container">
+                    <div class="provincia divTableHeading">
+                        <div class="divTableRow">
+                            <div class="divTableHead">provincia</div>
+                        </div>
+                    </div>
+                    <div class="contprovincia divTableBody">
+                        <div class="divTableRow">
+                            <div class="divTableCell">contprovincia</div>
+                        </div>
+                    </div>
+                    <div class="municipio divTableHeading">
+                        <div class="divTableRow">
+                            <div class="divTableHead">municipio</div>
+                        </div>
+                    </div>
+                    <div class="contmunicipio divTableBody">
+                        <div class="divTableRow">
+                            <div class="divTableCell">contmunicipio</div>
+                        </div>
+                    </div>
+                    <div class="hexagono divTableHeading">
+                        <div class="divTableRow">
+                            <div class="divTableHead">hexagono</div>
+                        </div>
+                    </div>
+                    <div class="conthexagon">
+                        <div class="divTableBody">
+                            <div class="divTableRow">
+                                <div class="divTableCell">conthexagono1</div>
+                            </div>
+                            <div class="divTableRow">
+                                <div class="divTableCell">conthexagono2</div>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            </div>
         </aside>
-        <div class="ad"></div>
+        <div class="ad">
+            <div style="font-size: small; font-family: monospace">
+                <p><b>Honeycomb Map:</b> Una nueva forma de mostrar datos en un mapa. Es una librería que usa una
+                    estructura
+                    de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser
+                    utilizada
+                    en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable.</p>
+
+                <p>Este tipo de visualización permite romper la brecha digital, haciendo accesible los datos a cualquier
+                    persona, ya que obtenemos información más clara de un solo vistazo. El usuario es capaz de obtener
+                    tanto
+                    la información puntual geolocalizada, como de una región más grande. Por ejemplo, conocer la
+                    farmacia
+                    más cercana (un punto), como el teléfono de atención médica de mi provincia.</p>
+
+                <p>Algunas de sus características son:<br>
+                    * Posibilidad de visualizar información multi-escala de forma simultánea.<br>
+                    * Limitando el tamaño de los hexágonos podemos ajustar la privacidad, la ubicación exacta nunca es
+                    mostrada.<br>
+                    * Normalmente para mostrar los datos asociados a una región usamos un punto en el centro de la
+                    misma,
+                    con HoneyComb Map ya no hace falta.<br>
+                    * Al dividir las regiones en hexágonos, las distancias y áreas se ven fácil y claramente.</p>
+            </div>
+        </div>
         <footer class="main-footer"></footer>
     </div>
     <script>

@@ -108,7 +108,7 @@ function entraHexagonoSave(e) {
 }
 
  function entraHexagono(e) {
-    console.log('entraHexagono');
+    //console.log('entraHexagono');
     var layer = e.target;
 
     layer.setStyle({
@@ -126,7 +126,7 @@ function entraHexagonoSave(e) {
     // info.update(layer.feature.properties);
 }
 function saleHexagono(e) {
-    console.log('saleHexagono');
+    //console.log('saleHexagono');
     // barcelona.resetStyle(e.target);
     // info.update();
 }
@@ -327,7 +327,7 @@ function entraMunicipioSave(e) {
 
 
 function entraMunicipio(e) {
-    console.log('entraMunicipio');
+    //console.log('entraMunicipio');
     // console.log(e.layer.feature.properties.municipioid);
     /* // test zoom out
     e.layer.setStyle({
@@ -353,7 +353,7 @@ function entraMunicipio(e) {
     // h3.edgeLength(h3Resolution, 'km') + 'km'
     // );
 
-    console.log(areas[e.layer.feature.properties.municipioid]);
+    // console.log(areas[e.layer.feature.properties.municipioid]);
     contornos[e.layer.feature.properties.municipioid].map.setStyle({
         stroke: true,        
         weight: 5,
@@ -366,7 +366,7 @@ function entraMunicipio(e) {
     }
 }
 function saleMunicipio(e) {   
-    console.log('saleMunicipio'); 
+    //console.log('saleMunicipio'); 
     
     contornos[e.layer.feature.properties.municipioid].map.resetStyle();
     areas[e.layer.feature.properties.municipioid].map.resetStyle(e.layer);  
