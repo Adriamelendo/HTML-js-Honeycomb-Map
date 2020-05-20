@@ -24,7 +24,7 @@ const config = ({
     lat: 28.261146,
     lng: -16.595508,
     zoom: 11,
-    fillOpacity: 0.6,
+    fillOpacity: 0.8,
     colorScale: [
         ['#f0f0f0', '#bdbdbd', '#636363'],
         ['#deebf7', '#9ecae1', '#3182bd'],
@@ -258,7 +258,16 @@ dlAnchorElem.appendChild(link);
     for (let d = 0; d < nhits; d++) {
         areas[municipios[d].recordid] = geojson2h3.h3SetToFeatureCollection(
             Object.keys(hexagons[d]),
-            hex => ({ value: hexagons[d][hex], colorscale: municipios[d].colorscale, municipioid: municipios[d].recordid, selected: 0 })
+            hex => ({ 
+                value: hexagons[d][hex], 
+                colorscale: municipios[d].colorscale, 
+                municipioid: municipios[d].recordid,
+                municipio: municipios[d].municipio,
+                provincia: municipios[d].provincia,
+                communidad_autonoma: municipios[d].communidad_autonoma,
+                pais: municipios[d].pais, 
+                selected: 0 
+            })
         );
     }
 
@@ -349,9 +358,17 @@ function entraMunicipio(e) {
         fillColor: getColor(areas[e.layer.feature.properties.municipioid].features[0].properties.value, 3)
     })  */
 
+    const municipio=e.layer.feature.properties.municipio;
+    const provincia=e.layer.feature.properties.provincia;
+    const communidad_autonoma=e.layer.feature.properties.communidad_autonoma;
+    const pais= e.layer.feature.properties.pais;
+
     const info = document.getElementById("sidebar");
     previous_content = info.innerHTML;
-    info.innerHTML = '<img src="./data/side_mun2.png">';
+    info.innerHTML = '<img src="./data/side_mun2.png"><br>Municipio: '+municipio+'<br>Provincia: '+provincia+'<br>Communidad Autonoma: '+communidad_autonoma+'<br>Pais: '+pais;
+
+    
+
     info.className = "side open";
     // areas[id].features.forEach(feature => feature.properties.colorscale = 2);    
     Object.keys(areas[id].map._layers).forEach(
@@ -359,12 +376,9 @@ function entraMunicipio(e) {
             const layer = areas[id].map._layers[key]
             if (layer.feature.properties.selected == 1) {
                 layer.setStyle({
-                    //stroke: true,        
-                    //weight: 5,
-                    //opacity: 1,
-                    //color: '#ff0000',
-                    fillColor: '#ff0000',
-                    fillOpacity: 1
+                    // fillColor: '#ff0000',
+                    fillColor: config.colorScale[2][2],
+                    fillOpacity: 0.6
                 });
 
             } else {
@@ -373,7 +387,7 @@ function entraMunicipio(e) {
                     fillColor: getColor(layer.feature.properties.value, 3 /*layer.feature.properties.colorscale*/),
                     stroke: false,
                     // fillOpacity: 0.2
-                    fillOpacity: 0.6
+                    fillOpacity: 0.4
                 })
             }
         }
@@ -412,7 +426,7 @@ function saleMunicipio(e) {
                 fillColor: getColor(layer.feature.properties.value, 1 /*layer.feature.properties.colorscale*/),
                 stroke: false,
                 // fillOpacity: 0.2
-                fillOpacity: 0.6
+                fillOpacity: 0.3
             })
         }
     )
@@ -443,8 +457,8 @@ function stylefill(feature) {
         fill: true,
         fillColor: getColor(feature.properties.value, feature.properties.colorscale),
         stroke: false,
-        // fillOpacity: 0.2
-        fillOpacity: 0.6
+        // fillOpacity: 0.3
+        fillOpacity: 0.7
     };
 }
 function renderArea(id) {
@@ -456,7 +470,7 @@ function renderArea(id) {
 }
 
 /*                  _           _
- *      /\/\   __ _(_)_ __     /_\  _ __ ___  __ _ ___
+ *      /\/\   __ _(_)_ __     /_\  ___ ___  __ _ ___
  *     /    \ / _` | | '_ \   //_\\| '__/ _ \/ _` / __|
  *    / /\/\ \ (_| | | | | | /  _  \ | |  __/ (_| \__ \
  *    \/    \/\__,_|_|_| |_| \_/ \_/_|  \___|\__,_|___/
