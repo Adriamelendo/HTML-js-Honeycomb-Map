@@ -42,9 +42,19 @@
         }
 
         .side {
+            transition: transform .3s;
             grid-area: sidebar;
             font-size: small;
             font-family: monospace;
+            z-index: 1000;
+        }
+
+        .open {
+            transform: translateY(0%);
+        }
+
+        .close {
+            transform: translateY(0%);
         }
 
         .ad {
@@ -59,12 +69,12 @@
             height: 100%;
             display: grid;
             grid-gap: 2px;
-            grid-template-rows: 100px auto 250px 20px;
+            grid-template-rows: 100px auto 350px 20px;
             grid-template-columns: 473px auto;
             grid-template-areas:
                 "header  nav"
-                "content content"             
-                "sidebar sidebar"                
+                "content content"
+                "sidebar sidebar"
                 "footer ad";
         }
 
@@ -83,9 +93,9 @@
 
             display: inline-block;
             margin-left: 0.5em;
-                margin-right: 0.5em;
-                margin-top: 0.5em;
-                margin-bottom: 0.5em; 
+            margin-right: 0.5em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
             padding: 0.7em 1.1em;
             outline: none;
             border: 3px solid rgba(0, 0, 0, 0.5);
@@ -131,11 +141,20 @@
             nav ul {
                 padding: 10px;
             }
-            nav a{
+
+            nav a {
                 margin-left: 0.5em;
                 margin-right: 0.5em;
                 margin-top: 0.5em;
-                margin-bottom: 0.5em;                
+                margin-bottom: 0.5em;
+            }
+
+            .open {
+                transform: translateX(0%);
+            }
+
+            .close {
+                transform: translateX(0%);
             }
         }
 
@@ -177,7 +196,7 @@
             </ul>
         </nav>
         <article class="content" id="mapview"></article>
-        <aside class="side" id="sidebar">
+        <aside class="side close" id="sidebar">
             <p><b>Honeycomb Map:</b> Una nueva forma de mostrar datos en un mapa. Es una librería que usa una estructura
                 de panal de abeja, mostrando la información en los hexágonos, de aquí su nombre. Su fin es ser utilizada
                 en los mapas actuales, usando la información de éstos, pero mostrándola de forma más amigable.</p>
