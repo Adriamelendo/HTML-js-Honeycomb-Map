@@ -108,8 +108,8 @@ function entraHexagonoSave(e) {
 }
 
 function entraHexagono(e) {
-    console.log('entraHexagono');
-    console.log(e);
+    // console.log('entraHexagono');
+    // console.log(e);
     e.target.feature.properties.selected = 1;
     /*var layer = e.target;
 
@@ -330,7 +330,7 @@ function entraMunicipioSave(e) {
 
 
 function entraMunicipio(e) {
-    console.log('entraMunicipio');
+    //console.log('entraMunicipio');
 
     const id = e.layer.feature.properties.municipioid;
     // console.log(e.layer.feature.properties.municipioid);
@@ -400,7 +400,7 @@ function entraMunicipio(e) {
 
 }
 function saleMunicipio(e) {
-    console.log('saleMunicipio');
+    // console.log('saleMunicipio');
     const id = e.layer.feature.properties.municipioid;
     contornos[id].map.resetStyle();
     areas[id].map.resetStyle(e.layer);
@@ -433,8 +433,8 @@ function stylecontour(feature) {
     };
 }
 function renderContorno(id) {
-    console.log('renderContorno');
-    console.log(id);
+    //console.log('renderContorno');
+    // console.log(id);
     contornos[id].map = L.geoJson(contornos[id], { style: stylecontour }).addTo(map);
 }
 function stylefill(feature) {
