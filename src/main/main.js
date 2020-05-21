@@ -153,8 +153,8 @@ function saleHexagono(e) {
 //}
 function onEachFeature(feature, layer) {
     layer.on({
-        // mouseover: entraHexagono,
-        // mouseout: saleHexagono,
+        mouseover: entraHexagono,
+        mouseout: saleHexagono,
         click: entraHexagonoSave
     });
 }
@@ -362,6 +362,7 @@ function saleMunicipio(e) {
     areas[e.layer.feature.properties.municipioid].map.resetStyle();
 }
  */
+
 function entraMunicipioSave(e) {
 
     if (previousMunicipioClick != '') {
@@ -512,8 +513,8 @@ function stylefill(feature) {
 }
 function renderArea(id) {
     areas[id].map = L.geoJson(areas[id], { style: stylefill, onEachFeature: onEachFeature }).on({
-        // mouseover: entraMunicipio,
-        // mouseout: saleMunicipio,
+        mouseover: entraMunicipio,
+        mouseout: saleMunicipio,        
         click: entraMunicipioSave
     }).addTo(map);
 }
