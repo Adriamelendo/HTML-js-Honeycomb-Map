@@ -13,6 +13,9 @@ $(document).ready(function () {
     });
 });
 
+
+
+
 /*       ___ _       _           _                   _       _     _           
  *      / _ \ | ___ | |__   __ _| | __   ____ _ _ __(_) __ _| |__ | | ___  ___ 
  *     / /_\/ |/ _ \| '_ \ / _` | | \ \ / / _` | '__| |/ _` | '_ \| |/ _ \/ __|
@@ -395,12 +398,13 @@ function entraMunicipio(e) {
 
     const info = document.getElementById("sidebar");
     previous_content = info.innerHTML;
+    const num = getRandomInt(1, 4);
     //info.innerHTML = '<img src="./data/side_mun2.png"><br>Municipio: '+municipio+'<br>Provincia: '+provincia+'<br>Communidad Autonoma: '+communidad_autonoma+'<br>Pais: '+pais;
     var orientacion = matchMedia("(orientation: landscape)");
     if( orientacion.matches) {
-        info.innerHTML = '<img src="./data/hexinfo.png" width="318.5px"><img src="./data/zoneinfo.png" width="318.5px"><img src="./data/leyenda.png" width="318.5px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
+        info.innerHTML = '<img src="./sidebar/hex'+num+'.png" width="318.5px"><img src="./sidebar/zone'+num+'.png" width="318.5px"><img src="./sidebar/leyenda1.png" width="318.5px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
     } else {        
-        info.innerHTML = '<img src="./data/hexinfo.png" width="490px"><img src="./data/zoneinfo.png" width="490px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
+        info.innerHTML = '<img src="./sidebar/hex'+num+'.png" width="490px"><img src="./sidebar/zone'+num+'.png" width="490px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
     }
     
 
