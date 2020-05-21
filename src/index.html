@@ -120,6 +120,53 @@
             justify-content: space-between;
         }
 
+        #mapview {
+            width: 100%;
+            height: 100%;
+        }
+
+        #outinfo {
+            width: 100%;
+        }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .leaflet-pane .leaflet-overlay-pane {
+            mix-blend-mode: multiply;
+        }
+
+        .text-provincia {
+            position: absolute;
+            top: 6px;
+            left: 506px;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .text-municipio {
+            position: absolute;
+            top: 161px;
+            left: 506px;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
         #pc {
             display: none;
         }
@@ -190,55 +237,7 @@
                 display: none;
             }
 
-        }
-
-        #mapview {
-            width: 100%;
-            height: 100%;
-        }
-
-        #outinfo {
-            width: 100%;
-        }
-
-        .info {
-            padding: 6px 8px;
-            font: 14px/16px Arial, Helvetica, sans-serif;
-            background: white;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-        }
-
-        .info h4 {
-            margin: 0 0 5px;
-            color: #777;
-        }
-
-        .leaflet-pane .leaflet-overlay-pane {
-            mix-blend-mode: multiply;
-        }
-
-        .text-provincia {
-            position: absolute;
-            top: 6px;
-            left: 506px;
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #ffffff;
-            font-size: 30px;
-            font-weight: 700;
-        }
-
-        .text-municipio {
-            position: absolute;
-            top: 161px;
-            left: 506px;
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            color: #ffffff;
-            font-size: 30px;
-            font-weight: 700;
-        }
-        }
+        }     
     </style>
 </head>
 
@@ -260,8 +259,8 @@
                 <div class="text-municipio"></div>
             </span>
             <span id='pc'>
-                <img src="./sidebar/hexblank.png" width="318.5px"><img src="./sidebar/zoneblank.png" width="318.5px"><img
-                    src="./sidebar/leyendablank.png" width="318.5px">
+                <img src="./sidebar/hexblank.png" width="318.5px"><img src="./sidebar/zoneblank.png"
+                    width="318.5px"><img src="./sidebar/leyendablank.png" width="318.5px">
                 <div class="text-provincia"></div>
                 <div class="text-municipio"></div>
             </span>
