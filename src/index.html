@@ -72,7 +72,7 @@
             grid-template-rows: 100px auto 350px 20px;
             grid-template-columns: 473px auto;
             grid-template-areas:
-                "header  nav"
+                "header  header"
                 "content content"
                 "sidebar sidebar"
                 "footer ad";
@@ -121,10 +121,10 @@
 
         @media only screen and (orientation: landscape) {
             .wrapper {
-                grid-template-columns: 473px auto 322px;
-                grid-template-rows: 100px auto 3px;
+                grid-template-columns: 473px auto 319px;
+                grid-template-rows: 100px 645px auto;
                 grid-template-areas:
-                    "header  nav     nav"
+                    "header  nav  nav"
                     "content content sidebar"
                     "footer  footer  ad";
             }

@@ -24,7 +24,7 @@ const config = ({
     lat: 28.261146,
     lng: -16.595508,
     zoom: 11,
-    fillOpacity: 0.7,
+    fillOpacity: 0.6,
     colorScale: [
         ['#f0f0f0', '#bdbdbd', '#636363'],
         ['#deebf7', '#9ecae1', '#3182bd'],
@@ -32,6 +32,11 @@ const config = ({
         ['#fee6ce', '#fdae6b', '#e6550d'],
         ['#efedf5', '#bcbddc', '#756bb1'],
         ['#fee0d2', '#fc9272', '#de2d26']
+    ],
+    scale: [
+        ['rgb(247,247,247)', 'rgb(204,204,204)', 'rgb(150,150,150)', 'rgb(99,99,99)',   'rgb(37,37,37)'], //gris
+        ['rgb(239,243,255)', 'rgb(189,215,231)', 'rgb(107,174,214)', 'rgb(49,130,189)', 'rgb(8,81,156)'], //azul
+        ['rgb(254,237,222)', 'rgb(253,190,133)', 'rgb(253,141,60)',  'rgb(230,85,13)',  'rgb(166,54,3)'], //naranja
     ]
 });
 
@@ -308,9 +313,9 @@ dlAnchorElem.appendChild(link);
 } */
 
 function getColor(d, colorscale) {
-    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.colorScale[colorscale][2] :
-        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.colorScale[colorscale][1] :
-            config.colorScale[colorscale][0];
+    return d > Math.ceil(maxpersonsinhex * 2 / 3) ? config.scale[colorscale][3] :
+        d > Math.ceil(maxpersonsinhex * 1 / 3) ? config.scale[colorscale][2] :
+            config.scale[colorscale][1];
 }
 //---------------------------------------------------------------------------------------------------------
 /*  Asi se ilumina toda el area 
@@ -365,9 +370,26 @@ function entraMunicipio(e) {
 
     const info = document.getElementById("sidebar");
     previous_content = info.innerHTML;
-    info.innerHTML = '<img src="./data/side_mun2.png"><br>Municipio: '+municipio+'<br>Provincia: '+provincia+'<br>Communidad Autonoma: '+communidad_autonoma+'<br>Pais: '+pais;
-
+    //info.innerHTML = '<img src="./data/side_mun2.png"><br>Municipio: '+municipio+'<br>Provincia: '+provincia+'<br>Communidad Autonoma: '+communidad_autonoma+'<br>Pais: '+pais;
+    var orientacion = matchMedia("(orientation: landscape)");
+    if( orientacion.matches) {
+        info.innerHTML = '<img src="./data/hexinfo.png" width="318.5px"><img src="./data/zoneinfo.png" width="318.5px"><img src="./data/leyenda.png" width="318.5px">'
+    } else {        
+        info.innerHTML = '<img src="./data/hexinfo.png" width="490px"><img src="./data/zoneinfo.png" width="490px">'
+    }
     
+
+
+    contornos[e.layer.feature.properties.municipioid].map.setStyle({
+        stroke: true,
+        weight: 5,
+        opacity: 1,
+        // color: config.colorScale[contornos[e.layer.feature.properties.municipioid].properties.colorscale]
+        color: '#e6550d'
+    });
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        contornos[e.layer.feature.properties.municipioid].map.bringToFront();
+    }
 
     info.className = "side open";
     // areas[id].features.forEach(feature => feature.properties.colorscale = 2);    
@@ -377,14 +399,20 @@ function entraMunicipio(e) {
             if (layer.feature.properties.selected == 1) {
                 layer.setStyle({
                     // fillColor: '#ff0000',
-                    fillColor: config.colorScale[2][1],
-                    fillOpacity: config.fillOpacity
+                    // fillColor: config.colorScale[2][1],
+                    stroke:true,
+                    weight: 5,
+                    color: '#756bb1',
+                    fillOpacity: 0
                 });
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                    layer.bringToFront();
+                }
 
             } else {
                 layer.setStyle({
                     fill: true,
-                    fillColor: getColor(layer.feature.properties.value, 3 /*layer.feature.properties.colorscale*/),
+                    fillColor: getColor(layer.feature.properties.value, 2 /*layer.feature.properties.colorscale*/),
                     stroke: false,
                     // fillOpacity: 0.2
                     fillOpacity: config.fillOpacity
@@ -400,16 +428,7 @@ function entraMunicipio(e) {
     // );
 
 
-    contornos[e.layer.feature.properties.municipioid].map.setStyle({
-        stroke: true,
-        weight: 5,
-        opacity: 1,
-        // color: config.colorScale[contornos[e.layer.feature.properties.municipioid].properties.colorscale]
-        color: '#e6550d'
-    });
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        contornos[e.layer.feature.properties.municipioid].map.bringToFront();
-    }
+    
 
 
 }
