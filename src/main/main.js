@@ -24,7 +24,7 @@ const config = ({
     lat: 28.261146,
     lng: -16.595508,
     zoom: 11,
-    fillOpacity: 0.8,
+    fillOpacity: 0.7,
     colorScale: [
         ['#f0f0f0', '#bdbdbd', '#636363'],
         ['#deebf7', '#9ecae1', '#3182bd'],
@@ -377,8 +377,8 @@ function entraMunicipio(e) {
             if (layer.feature.properties.selected == 1) {
                 layer.setStyle({
                     // fillColor: '#ff0000',
-                    fillColor: config.colorScale[2][2],
-                    fillOpacity: 0.6
+                    fillColor: config.colorScale[2][1],
+                    fillOpacity: config.fillOpacity
                 });
 
             } else {
@@ -387,7 +387,7 @@ function entraMunicipio(e) {
                     fillColor: getColor(layer.feature.properties.value, 3 /*layer.feature.properties.colorscale*/),
                     stroke: false,
                     // fillOpacity: 0.2
-                    fillOpacity: 0.4
+                    fillOpacity: config.fillOpacity
                 })
             }
         }
@@ -426,7 +426,7 @@ function saleMunicipio(e) {
                 fillColor: getColor(layer.feature.properties.value, 1 /*layer.feature.properties.colorscale*/),
                 stroke: false,
                 // fillOpacity: 0.2
-                fillOpacity: 0.3
+                fillOpacity: config.fillOpacity
             })
         }
     )
@@ -458,7 +458,7 @@ function stylefill(feature) {
         fillColor: getColor(feature.properties.value, feature.properties.colorscale),
         stroke: false,
         // fillOpacity: 0.3
-        fillOpacity: 0.7
+        fillOpacity: config.fillOpacity
     };
 }
 function renderArea(id) {
