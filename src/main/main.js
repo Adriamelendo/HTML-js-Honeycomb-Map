@@ -23,7 +23,7 @@ $(document).ready(function () {
 const config = ({
     lat: 28.261146,
     lng: -16.595508,
-    zoom: 11,
+    zoom: 10,
     fillOpacity: 0.6,
     colorScale: [
         ['#f0f0f0', '#bdbdbd', '#636363'],
