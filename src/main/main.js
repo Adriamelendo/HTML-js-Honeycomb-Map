@@ -398,7 +398,7 @@ function entraMunicipio(e) {
     //info.innerHTML = '<img src="./data/side_mun2.png"><br>Municipio: '+municipio+'<br>Provincia: '+provincia+'<br>Communidad Autonoma: '+communidad_autonoma+'<br>Pais: '+pais;
     var orientacion = matchMedia("(orientation: landscape)");
     if( orientacion.matches) {
-        info.innerHTML = '<img src="./data/hexinfo.png" width="318.5px"><img src="./data/zoneinfo.png" width="318.5px"><img src="./data/leyenda.png" width="318.5px">'
+        info.innerHTML = '<img src="./data/hexinfo.png" width="318.5px"><img src="./data/zoneinfo.png" width="318.5px"><img src="./data/leyenda.png" width="318.5px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
     } else {        
         info.innerHTML = '<img src="./data/hexinfo.png" width="490px"><img src="./data/zoneinfo.png" width="490px">'
     }
