@@ -400,7 +400,7 @@ function entraMunicipio(e) {
     if( orientacion.matches) {
         info.innerHTML = '<img src="./data/hexinfo.png" width="318.5px"><img src="./data/zoneinfo.png" width="318.5px"><img src="./data/leyenda.png" width="318.5px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
     } else {        
-        info.innerHTML = '<img src="./data/hexinfo.png" width="490px"><img src="./data/zoneinfo.png" width="490px">'
+        info.innerHTML = '<img src="./data/hexinfo.png" width="490px"><img src="./data/zoneinfo.png" width="490px"><div class="text-provincia">Canarias(Tenerife)</div><div class="text-municipio">'+municipio+'</div>'
     }
     
 
