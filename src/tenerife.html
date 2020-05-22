@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Honeycomb Map</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/h3-js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://bundle.run/geojson2h3@1.0.1"></script>
+    <script src="./main/maintenerife.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-head {
+            align-items: center;
+            grid-area: header;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .content {
+            grid-area: content;
+        }
+
+        .main-nav {
+            grid-area: nav;
+            padding: 0px;
+        }
+
+        .side {
+            transition: transform .3s;
+            grid-area: sidebar;
+            font-size: small;
+            font-family: monospace;
+            z-index: 1000;
+        }
+
+        .open {
+            transform: translateY(0%);
+        }
+
+        .close {
+            transform: translateY(0%);
+        }
+
+        .ad {
+            grid-area: ad;
+        }
+
+        .main-footer {
+            grid-area: footer;
+        }
+
+        .wrapper {
+            height: 100%;
+            display: grid;
+            grid-gap: 2px;
+            grid-template-rows: 100px auto 350px 20px;
+            grid-template-columns: 473px auto;
+            grid-template-areas:
+                "header  nav"
+                "content content"
+                "sidebar sidebar"
+                "footer ad";
+        }
+
+        nav ul {
+            margin: 2px;
+            padding: 0px;
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            text-decoration: none;
+            border-color: #000000;
+            color: #000000;
+
+            display: inline-block;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            padding: 0.7em 1.1em;
+            outline: none;
+            border: 3px solid rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.5);
+            text-decoration: none;
+            font-weight: 700;
+            opacity: 1;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+            font-size: 20pt;
+        }
+
+        nav a:hover {
+            background-color: #3182bd;
+        }
+
+        aside ul {
+            margin: 2px;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #mapview {
+            width: 100%;
+            height: 100%;
+        }
+
+        #outinfo {
+            width: 100%;
+        }
+
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        .leaflet-pane .leaflet-overlay-pane {
+            mix-blend-mode: multiply;
+        }
+
+        .text-provincia {
+            position: absolute;
+            top: 6px;
+            left: 506px;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .text-municipio {
+            position: absolute;
+            top: 161px;
+            left: 506px;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        #pc {
+            display: none;
+        }
+
+        @media only screen and (orientation: landscape) {
+            .wrapper {
+                grid-template-columns: 473px auto 319px;
+                grid-template-rows: 100px minmax(645px,870px) auto;
+                grid-template-areas:
+                    "header  nav  nav"
+                    "content content sidebar"
+                    "footer  footer  ad";
+            }
+
+            aside ul {
+                display: block;
+                justify-content: space-between;
+            }
+
+            .main-nav {
+                padding: 0px;
+            }
+
+            nav ul {
+                padding: 0px;
+            }
+
+            nav a {
+                margin-left: 0.5em;
+                margin-right: 0.5em;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+            }
+
+            .open {
+                transform: translateX(0%);
+            }
+
+            .close {
+                transform: translateX(0%);
+            }
+
+            .text-provincia {
+                position: absolute;
+                top: 213px;
+                left: 16px;
+                font-family: 'Helvetica', 'Arial', sans-serif;
+                color: #ffffff;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            .text-municipio {
+                position: absolute;
+                top: 312px;
+                left: 16px;
+                font-family: 'Helvetica', 'Arial', sans-serif;
+                color: #ffffff;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            #pc {
+                display: inline;
+            }
+
+            #mobile {
+                display: none;
+            }
+
+        }     
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="main-head"><a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">
+                <img src="./data/header.png" height="100px" alt="Honeycomb Map"></a></header>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">About</a>
+                </li>
+            </ul>
+        </nav>
+        <article class="content" id="mapview"></article>
+        <aside class="side close" id="sidebar">
+            <span id='mobile'>
+                <img src="./side/hexblank.png" width="490px"><img src="./side/zoneblank.png" width="490px">
+                <div class="text-provincia"></div>
+                <div class="text-municipio"></div>
+            </span>
+            <span id='pc'>
+                <img src="./side/hexblank.png" width="318.5px"><img src="./side/zoneblank.png"
+                    width="318.5px"><img src="./side/leyendablank.png" width="318.5px">
+                <div class="text-provincia"></div>
+                <div class="text-municipio"></div>
+            </span>
+        </aside>
+        <div class="ad"></div>
+        <footer class="main-footer"></footer>
+    </div>
+    <script>
+        const map = L.map('mapview').setView([config.lat, config.lng], config.zoom);
+        const tileSource = 'mapbox'
+        switch (tileSource) {
+            case 'openstreetmaps':
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Honeycomb Map</a>'
+                }).addTo(map);
+                break;
+            case 'mapbox':
+                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    attribution: '&copy; <a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Honeycomb Map</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/light-v9',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoibnJhYmlub3dpdHoiLCJhIjoiY2s3bnl1NWw1MDM4YTNwcXdnaGx1bHc0dSJ9.fifgXUv2VNkykCIpALSrHA'
+                }).addTo(map);
+                break;
+            case 'openmaptiles':
+                //https://openmaptiles.org/
+                // from your own server: https://openmaptiles.org/docs/website/leaflet/
+                break;
+        }
+        // var popup = L.popup();
+
+
+
+
+        // L.marker([51.5, -0.09]).addTo(map)
+        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        //     .openPopup();
+        // var polygon = L.polygon([
+        //         [51.509, -0.08],
+        //         [51.503, -0.06],
+        //         [51.51, -0.047]
+        //     ]).addTo(mymap);
+        // polygon.bindPopup("I am a polygon.");
+        // map.on('styledata', function () {
+        //     rendermap();
+        // });
+        // map.on("mousemove", ({ lngLat: { lng, lat } }) => {
+        //     mouseover(lng, lat);
+        // });
+    </script>
+</body>
+
+</html>
