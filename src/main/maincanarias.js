@@ -195,7 +195,7 @@ function zoomLevelChange(e) {
     var currentZoom = map.getZoom();
     console.log('currentZoom: '+currentZoom)
     if (currentZoom > 9) {
-        window.location.replace('./index.html');
+        window.location.replace('./municipios.html');
     }
     if (currentZoom >7 && currentZoom <=9){
         window.location.replace('./tenerife.html');
