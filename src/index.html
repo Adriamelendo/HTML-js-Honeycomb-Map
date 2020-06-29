@@ -271,6 +271,7 @@
     <script>
         const map = L.map('mapview').setView([config.lat, config.lng], config.zoom);
         const tileSource = 'mapbox'
+		// https://wiki.openstreetmap.org/wiki/Tile_servers
         switch (tileSource) {
             case 'openstreetmaps':
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

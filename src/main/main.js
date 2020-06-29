@@ -172,6 +172,9 @@ function mouseover(lng, lat) {
  *    \/    \/\__,_|_|_| |_| \____/\___|_| |_|\___|_|  \__,_|_|
  */
 
+// urls from: https://data.opendatasoft.com/explore/dataset/espana-municipios%40public/api/
+// se pued emirar este tambien: https://data.opendatasoft.com/explore/dataset/recintos-municipales-espana-spain-municipalities-boundaries%40public/api/
+
 // const url = 'https://data.opendatasoft.com/api/records/1.0/search/?dataset=espana-municipios%40public&facet=communidad_autonoma&facet=provincia&facet=municipio&refine.provincia=Barcelona'
 
 // Este va centro tenerife
