@@ -17,6 +17,7 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+    <script src="./main/leaflet-providers.js"></script>
     <style>
         html,
         body {
@@ -237,7 +238,7 @@
                 display: none;
             }
 
-        }     
+        }
     </style>
 </head>
 
@@ -259,8 +260,8 @@
                 <div class="text-municipio"></div>
             </span>
             <span id='pc'>
-                <img src="./side/hexblank.png" width="318.5px"><img src="./side/zoneblank.png"
-                    width="318.5px"><img src="./side/leyendablank.png" width="318.5px">
+                <img src="./side/hexblank.png" width="318.5px"><img src="./side/zoneblank.png" width="318.5px"><img
+                    src="./side/leyendablank.png" width="318.5px">
                 <div class="text-provincia"></div>
                 <div class="text-municipio"></div>
             </span>
@@ -270,9 +271,24 @@
     </div>
     <script>
         const map = L.map('mapview').setView([config.lat, config.lng], config.zoom);
-        const tileSource = 'mapbox'
-		// https://wiki.openstreetmap.org/wiki/Tile_servers
+        const tileSource = 'Stadia_OSMBright'
+        // https://wiki.openstreetmap.org/wiki/Tile_servers
         switch (tileSource) {
+            case 'Stadia_OSMBright':
+                L.tileLayer.provider('Stadia.OSMBright').addTo(map);
+                break;
+            case 'tonerhybrid':
+                L.tileLayer.provider('Stamen.TonerHybrid').addTo(map);
+                break;
+            case 'tonerlite':
+                L.tileLayer.provider('Stamen.TonerLite').addTo(map);
+                break;
+            case 'toner':
+                L.tileLayer.provider('Stamen.Toner').addTo(map);
+                break;
+            case 'thunder':
+                L.tileLayer.provider('Thunderforest.MobileAtlas', {apikey: 'b543c9441298434fb34ab13cdc87740f'}).addTo(map);
+                break;
             case 'openstreetmaps':
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">Honeycomb Map</a>'
