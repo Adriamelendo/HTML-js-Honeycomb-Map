@@ -18,6 +18,7 @@
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
     <script src="./main/leaflet-providers.js"></script>
+    
     <style>
         html,
         body {
@@ -250,6 +251,8 @@
             <ul>
                 <li><a href="https://tree.taiga.io/project/adriamelendo-honeycomb-map/wiki/home">About</a>
                 </li>
+                <li><a href="http://www.honeycombmaps.org">Version 2.0</a>
+                </li>
             </ul>
         </nav>
         <article class="content" id="mapview"></article>
@@ -331,5 +334,9 @@
         // });
     </script>
 </body>
-
+<script>    
+    setTimeout(function(){ if(confirm("Version 2.0 of Honeycomb Map is available! Do you want to be redirect?")){
+        window.location = "http://www.honeycombmaps.org";
+    }},15000);
+</script>
 </html>
